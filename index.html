@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="en" class="h-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Trivia tool</title>
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body class="h-100">
+<div id="elmish-app" class="d-flex flex-column h-100">
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand py-0" href="/">Trivia tool</a>
+        <div class="navbar-text py-1">
+            <a href="https://github.com/nojaf/trivia-tool" target="_blank" class="btn btn-dark text-white">
+                <i class="fab fa-github mr-1 mt-1"></i>
+                GitHub</a>
+        </div>
+    </nav>
+    <main class="flex-grow-1">
+        <div class="row h-100 no-gutters">
+            <div class="col-4 border-right h-100 d-flex flex-column">
+                <div id="source" class="flex-grow-1 overflow-hidden">
+                    <img src="https://i.imgur.com/iZXYWFt.png" class="" alt="Monaco editor">
+                </div>
+                <form id="settings">
+                    <div class="d-flex py-1">
+                        <input type="text" class="form-control rounded-0 d-inline-block"
+                               placeholder="Enter your defines separated with a space">
+                        <div class="d-inline-block">
+                            <div class="btn-group btn-group-toggle rounded-0" data-toggle="buttons">
+                                <label class="btn active rounded-0">
+                                    <input type="radio" name="options" id="option1" autocomplete="off" checked> *.fs
+                                </label>
+                                <label class="btn rounded-0">
+                                    <input type="radio" name="options" id="option2" autocomplete="off"> *.fsi
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 rounded-0">
+                        <i class="fas fa-code mr-1"></i>
+                        Get tokens
+                    </button>
+                </form>
+            </div>
+            <div class="col-8 h-100">
+                <div id="loader" class="d-none">
+                    <div class="inner">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="h-100 d-flex flex-column">
+                    <ul class="nav nav-pills border-bottom border-primary" id="result-tabs">
+                        <li class="nav-item rounded-0">
+                            <a class="nav-link active rounded-0" href="#trivia" data-toggle="tab">By trivia</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#content" class="nav-link rounded-0" data-toggle="tab">By content</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content flex-grow-1">
+                        <div class="tab-pane fade show active h-100 d-flex" id="trivia">
+                            <ul class="nav flex-column nav-pills">
+                                <li class="nav-item rounded-0" title="MainNode">
+                                    <a href="#by-trivia-1" data-toggle="tab" class="nav-link nav-link-main-node active d-flex">
+                                        <span class="mr-4">SynModuleDecl.NestedModule</span><span
+                                            class="badge badge-dark px-2 py-1 ml-auto">(1,0 - 11,30)</span></a>
+                                </li>
+                                <li class="nav-item" title="MainNode">
+                                    <a href="#by-trivia-2" data-toggle="tab" class="nav-link nav-link-main-node d-flex"><span>SynModuleDecl.Let</span>
+                                        <span class="badge badge-dark px-2 py-1 ml-auto">(3,0 - 3,17)</span></a>
+                                </li>
+                                <li class="nav-item" title="MainNode">
+                                    <a href="#by-trivia-3" data-toggle="tab" class="nav-link nav-link-main-node d-flex"><span class="mr-4">SynExpr.Const</span><span
+                                            class="badge badge-dark px-2 py-1 ml-auto">(3,10 - 3,17)</span></a>
+                                </li>
+                                <li class="nav-item" title="MainNode">
+                                    <a href="#by-trivia-4" data-toggle="tab" class="nav-link nav-link-main-node d-flex"><span class="mr-4">SynModuleDecl.Types</span><span
+                                            class="badge badge-dark px-2 py-1 ml-auto">(5,0 - 8,1)</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item" title="MainNode">
+                                    <a href="#by-trivia-5" data-toggle="tab" class="nav-link nav-link-main-node d-flex"><span class="mr-4">SynModuleDecl.Let</span><span
+                                            class="badge badge-dark px-2 py-1 ml-auto">(10,0 - 11,30)</span></a>
+                                </li>
+                                <li class="nav-item" title="Token">
+                                    <a href="#by-trivia-6" data-toggle="tab" class="nav-link nav-link-token d-flex"><span class="mr-4">LBRACE</span><span
+                                            class="badge badge-dark px-2 py-1 ml-auto">(10,10 - 10,11)</span></a>
+                                </li>
+                                <li class="nav-item" title="MainNode">
+                                    <a href="#by-trivia-7" data-toggle="tab" class="nav-link nav-link-main-node d-flex"><span class="mr-4">SynExpr.Const</span><span
+                                            class="badge badge-dark px-2 py-1 ml-auto">(11,11 - 11,16)</span></a>
+                                </li>
+                                <li class="nav-item" title="MainNode">
+                                    <a href="#by-trivia-8" data-toggle="tab" class="nav-link nav-link-main-node d-flex"><span class="mr-4">SynExpr.Const</span><span
+                                            class="badge badge-dark px-2 py-1 ml-auto">(11,26 - 11,28)</span></a>
+                                </li>
+                            </ul>
+                            <div class="bg-light flex-grow-1 py-2 px-4 tab-content">
+                                <div id="by-trivia-1" class="tab-pane active">
+                                    <h2 class="mb-4">SynModuleDecl.NestedModule (1,0 - 11,30)</h2>
+                                    <h4>Content after</h4>
+                                    <ul class="list-unstyled">
+                                        <li>Newline</li>
+                                    </ul>
+                                </div>
+                                <div id="by-trivia-2" class="tab-pane">
+                                    <h2 class="mb-4">SynModuleDecl.Let (3,0 - 3,17)</h2>
+                                    <h4>Content before</h4>
+                                    <ul class="list-unstyled">
+                                        <li>Newline</li>
+                                    </ul>
+                                </div>
+                                <div id="by-trivia-3" class="tab-pane">
+                                    <h2 class="mb-4">SynExpr.Const (3,10 - 3,17)</h2>
+                                    <h4>Content itself</h4>
+                                    <ul class="list-unstyled">
+                                        <li>StringContent(<code>&quot;DEBUG&quot;</code>)</li>
+                                    </ul>
+                                </div>
+                                <div id="by-trivia-4" class="tab-pane">
+                                    <h2 class="mb-4">SynModuleDecl.Types (5,0 - 8,1)</h2>
+                                    <h4>Content before</h4>
+                                    <ul class="list-unstyled">
+                                        <li>Newline</li>
+                                    </ul>
+                                </div>
+                                <div id="by-trivia-5" class="tab-pane">
+                                    <h2 class="mb-4">SynModuleDecl.Let (10,0 - 11,30)</h2>
+                                    <h4>Content before</h4>
+                                    <ul class="list-unstyled">
+                                        <li>Newline</li>
+                                    </ul>
+                                    <h4>Content after</h4>
+                                    <ul class="list-unstyled">
+                                        <li>Comment(BlockComment(<code>&quot;(* ending with block comment *)&quot;</code>))</li>
+                                    </ul>
+                                </div>
+                                <div id="by-trivia-6" class="tab-pane">
+                                    <h2 class="mb-4">Token <code>LBRACE</code> (10,10 - 10,11)</h2>
+                                    <h4>Content after</h4>
+                                    <ul class="list-unstyled">
+                                        <li>Comment(LineComment(<code>&quot;// this comment right&quot;</code>))</li>
+                                    </ul>
+                                </div>
+                                <div id="by-trivia-7" class="tab-pane">
+                                    <h2 class="mb-4">SynExpr.Const (11,11 - 11,16)</h2>
+                                    <h4>Content itself</h4>
+                                    <ul class="list-unstyled">
+                                        <li>StringContent(<code>&quot;FOO&quot;</code>)</li>
+                                    </ul>
+                                </div>
+                                <div id="by-trivia-8" class="tab-pane">
+                                    <h2 class="mb-4">SynExpr.Const (11,26 - 11,28)</h2>
+                                    <h4>Content itself</h4>
+                                    <ul class="list-unstyled">
+                                        <li>Number(<code>&quot;78&quot;</code>)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade h-100" id="content">by content</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+<script>
+    $(() => {
+        $("#settings").submit(ev => {
+            ev.preventDefault();
+            $("#loader").removeClass("d-none");
+            setTimeout(() => {
+                $("#loader").addClass("d-none");
+            }, 500);
+        });
+    });
+</script>
+</body>
+</html>

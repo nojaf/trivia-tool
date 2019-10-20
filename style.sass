@@ -1,0 +1,98 @@
+$dark: #211426
+$primary: #AB69C6
+$secondary: #6A8DDE
+$danger: #E01D31
+$warning: #D69D36
+$success: #66D4AC
+
+@import "node_modules/bootstrap/scss/_functions.scss"
+@import "node_modules/bootstrap/scss/_variables.scss"
+@import "node_modules/bootstrap/scss/_mixins.scss"
+@import "node_modules/bootstrap/scss/_root.scss"
+@import "node_modules/bootstrap/scss/_reboot.scss"
+@import "node_modules/bootstrap/scss/_type.scss"
+@import "node_modules/bootstrap/scss/_images.scss"
+@import "node_modules/bootstrap/scss/_code.scss"
+@import "node_modules/bootstrap/scss/_grid.scss"
+@import "node_modules/bootstrap/scss/_tables.scss"
+@import "node_modules/bootstrap/scss/_forms.scss"
+@import "node_modules/bootstrap/scss/_buttons.scss"
+@import "node_modules/bootstrap/scss/_transitions.scss"
+// @import "node_modules/bootstrap/scss/_dropdown.scss"
+@import "node_modules/bootstrap/scss/_button-group.scss"
+// @import "node_modules/bootstrap/scss/_input-group.scss"
+// @import "node_modules/bootstrap/scss/_custom-forms.scss"
+@import "node_modules/bootstrap/scss/_nav.scss"
+@import "node_modules/bootstrap/scss/_navbar.scss"
+// @import "node_modules/bootstrap/scss/_card.scss"
+// @import "node_modules/bootstrap/scss/_breadcrumb.scss"
+// @import "node_modules/bootstrap/scss/_pagination.scss"
+@import "node_modules/bootstrap/scss/_badge.scss"
+// @import "node_modules/bootstrap/scss/_jumbotron.scss"
+@import "node_modules/bootstrap/scss/_alert.scss"
+@import "node_modules/bootstrap/scss/_progress.scss"
+// @import "node_modules/bootstrap/scss/_media.scss"
+@import "node_modules/bootstrap/scss/_list-group.scss"
+@import "node_modules/bootstrap/scss/_close.scss"
+@import "node_modules/bootstrap/scss/_toasts.scss"
+@import "node_modules/bootstrap/scss/_modal.scss"
+@import "node_modules/bootstrap/scss/_tooltip.scss"
+@import "node_modules/bootstrap/scss/_popover.scss"
+// @import "node_modules/bootstrap/scss/_carousel.scss"
+@import "node_modules/bootstrap/scss/_spinners.scss"
+@import "node_modules/bootstrap/scss/_utilities.scss"
+// @import "node_modules/bootstrap/scss/_print.scss"
+
+.fa-github-wrapper
+  width: 24px
+  display: inline
+
+  .fa-github
+    position: relative
+    top: -2px
+    left: -2px
+
+#settings
+  .btn-group
+    .btn
+      @include button-outline-variant($secondary)
+      cursor: pointer
+      &.active
+        cursor: default
+
+#loader
+  background-color: transparentize($white, 0.5)
+  height: 100%
+  .inner
+    position: relative
+    top: 50%
+    left: 50%
+    z-index: 1
+    transform: translate(-50%,-50%)
+    width: $spinner-width
+    height: $spinner-height
+
+.pointer
+  cursor: pointer
+
+@mixin custom-nav-link($color)
+  background-color: $color
+  .nav-pills &
+    border-radius: 0
+  color: $white
+  &:hover
+    background-color: darken($color, 10%)
+    color: $white
+  &.active
+    .nav-pills &
+      background-color: darken($color, 20%)
+      border-color: darken($color, 20%)
+      border-left: 10px solid $white
+
+$main-node: #e26a6a
+.nav-link-main-node
+  @include custom-nav-link($main-node)
+
+$token-node: #a2ded0
+.nav-link-token
+  @include custom-nav-link($token-node)

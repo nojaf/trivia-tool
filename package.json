@@ -1,0 +1,22 @@
+{
+  "name": "trivia-tool",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "nojaf <florian.verdonck@outlook.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "browser-sync": "^2.26.7",
+    "concurrently": "^5.0.0",
+    "node-sass": "^4.12.0"
+  },
+  "scripts": {
+    "sass": "node-sass style.sass style.css",
+    "presass:watch": "yarn sass",
+    "sass:watch": "yarn sass --watch",
+    "sync": "browser-sync start -s --files \"*.html, *.js, *.css\" --no-notify",
+    "start": "concurrently \"yarn sass:watch\" \"yarn sync\""
+  },
+  "dependencies": {
+    "bootstrap": "^4.3.1"
+  }
+}
