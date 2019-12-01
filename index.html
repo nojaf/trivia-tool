@@ -53,117 +53,210 @@
                         </div>
                     </div>
                 </div>
-                <div class="h-100 d-flex flex-column">
+                <div class="h-100 d-flex flex-column" id="results">
                     <ul class="nav nav-pills border-bottom border-primary" id="result-tabs">
-                        <li class="nav-item rounded-0">
-                            <a class="nav-link active rounded-0" href="#trivia" data-toggle="tab">By trivia</a>
+                        <li class="nav-item">
+                            <a class="nav-link rounded-0" href="#trivia" data-toggle="tab">By trivia</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#content" class="nav-link rounded-0" data-toggle="tab">By content</a>
+                            <a href="#content" class="nav-link active rounded-0" data-toggle="tab">By content</a>
                         </li>
                     </ul>
                     <div class="tab-content flex-grow-1">
-                        <div class="tab-pane fade show active h-100 d-flex" id="trivia">
-                            <ul class="nav flex-column nav-pills">
-                                <li class="nav-item rounded-0" title="MainNode">
-                                    <a href="#by-trivia-1" data-toggle="tab" class="nav-link nav-link-main-node active d-flex">
-                                        <span class="mr-4">SynModuleDecl.NestedModule</span><span
-                                            class="badge badge-dark px-2 py-1 ml-auto">(1,0 - 11,30)</span></a>
-                                </li>
-                                <li class="nav-item" title="MainNode">
-                                    <a href="#by-trivia-2" data-toggle="tab" class="nav-link nav-link-main-node d-flex"><span>SynModuleDecl.Let</span>
-                                        <span class="badge badge-dark px-2 py-1 ml-auto">(3,0 - 3,17)</span></a>
-                                </li>
-                                <li class="nav-item" title="MainNode">
-                                    <a href="#by-trivia-3" data-toggle="tab" class="nav-link nav-link-main-node d-flex"><span class="mr-4">SynExpr.Const</span><span
-                                            class="badge badge-dark px-2 py-1 ml-auto">(3,10 - 3,17)</span></a>
-                                </li>
-                                <li class="nav-item" title="MainNode">
-                                    <a href="#by-trivia-4" data-toggle="tab" class="nav-link nav-link-main-node d-flex"><span class="mr-4">SynModuleDecl.Types</span><span
-                                            class="badge badge-dark px-2 py-1 ml-auto">(5,0 - 8,1)</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item" title="MainNode">
-                                    <a href="#by-trivia-5" data-toggle="tab" class="nav-link nav-link-main-node d-flex"><span class="mr-4">SynModuleDecl.Let</span><span
-                                            class="badge badge-dark px-2 py-1 ml-auto">(10,0 - 11,30)</span></a>
-                                </li>
-                                <li class="nav-item" title="Token">
-                                    <a href="#by-trivia-6" data-toggle="tab" class="nav-link nav-link-token d-flex"><span class="mr-4">LBRACE</span><span
-                                            class="badge badge-dark px-2 py-1 ml-auto">(10,10 - 10,11)</span></a>
-                                </li>
-                                <li class="nav-item" title="MainNode">
-                                    <a href="#by-trivia-7" data-toggle="tab" class="nav-link nav-link-main-node d-flex"><span class="mr-4">SynExpr.Const</span><span
-                                            class="badge badge-dark px-2 py-1 ml-auto">(11,11 - 11,16)</span></a>
-                                </li>
-                                <li class="nav-item" title="MainNode">
-                                    <a href="#by-trivia-8" data-toggle="tab" class="nav-link nav-link-main-node d-flex"><span class="mr-4">SynExpr.Const</span><span
-                                            class="badge badge-dark px-2 py-1 ml-auto">(11,26 - 11,28)</span></a>
-                                </li>
-                            </ul>
-                            <div class="bg-light flex-grow-1 py-2 px-4 tab-content">
-                                <div id="by-trivia-1" class="tab-pane active">
-                                    <h2 class="mb-4">SynModuleDecl.NestedModule (1,0 - 11,30)</h2>
-                                    <h4>Content after</h4>
-                                    <ul class="list-unstyled">
-                                        <li>Newline</li>
-                                    </ul>
-                                </div>
-                                <div id="by-trivia-2" class="tab-pane">
-                                    <h2 class="mb-4">SynModuleDecl.Let (3,0 - 3,17)</h2>
-                                    <h4>Content before</h4>
-                                    <ul class="list-unstyled">
-                                        <li>Newline</li>
-                                    </ul>
-                                </div>
-                                <div id="by-trivia-3" class="tab-pane">
-                                    <h2 class="mb-4">SynExpr.Const (3,10 - 3,17)</h2>
-                                    <h4>Content itself</h4>
-                                    <ul class="list-unstyled">
-                                        <li>StringContent(<code>&quot;DEBUG&quot;</code>)</li>
-                                    </ul>
-                                </div>
-                                <div id="by-trivia-4" class="tab-pane">
-                                    <h2 class="mb-4">SynModuleDecl.Types (5,0 - 8,1)</h2>
-                                    <h4>Content before</h4>
-                                    <ul class="list-unstyled">
-                                        <li>Newline</li>
-                                    </ul>
-                                </div>
-                                <div id="by-trivia-5" class="tab-pane">
-                                    <h2 class="mb-4">SynModuleDecl.Let (10,0 - 11,30)</h2>
-                                    <h4>Content before</h4>
-                                    <ul class="list-unstyled">
-                                        <li>Newline</li>
-                                    </ul>
-                                    <h4>Content after</h4>
-                                    <ul class="list-unstyled">
-                                        <li>Comment(BlockComment(<code>&quot;(* ending with block comment *)&quot;</code>))</li>
-                                    </ul>
-                                </div>
-                                <div id="by-trivia-6" class="tab-pane">
-                                    <h2 class="mb-4">Token <code>LBRACE</code> (10,10 - 10,11)</h2>
-                                    <h4>Content after</h4>
-                                    <ul class="list-unstyled">
-                                        <li>Comment(LineComment(<code>&quot;// this comment right&quot;</code>))</li>
-                                    </ul>
-                                </div>
-                                <div id="by-trivia-7" class="tab-pane">
-                                    <h2 class="mb-4">SynExpr.Const (11,11 - 11,16)</h2>
-                                    <h4>Content itself</h4>
-                                    <ul class="list-unstyled">
-                                        <li>StringContent(<code>&quot;FOO&quot;</code>)</li>
-                                    </ul>
-                                </div>
-                                <div id="by-trivia-8" class="tab-pane">
-                                    <h2 class="mb-4">SynExpr.Const (11,26 - 11,28)</h2>
-                                    <h4>Content itself</h4>
-                                    <ul class="list-unstyled">
-                                        <li>Number(<code>&quot;78&quot;</code>)</li>
-                                    </ul>
+                        <div class="tab-pane fade h-100" id="trivia">
+                            <div class="d-flex h-100">
+                                <ul class="nav flex-column nav-pills">
+                                    <li class="nav-item" title="MainNode">
+                                        <a href="#by-trivia-1" data-toggle="tab" class="nav-link nav-link-main-node active d-flex">
+                                            <span class="mr-4">SynModuleDecl.NestedModule</span><span
+                                                class="badge badge-dark px-2 py-1 ml-auto">(1,0 - 11,30)</span></a>
+                                    </li>
+                                    <li class="nav-item" title="MainNode">
+                                        <a href="#by-trivia-2" data-toggle="tab" class="nav-link nav-link-main-node d-flex"><span>SynModuleDecl.Let</span>
+                                            <span class="badge badge-dark px-2 py-1 ml-auto">(3,0 - 3,17)</span></a>
+                                    </li>
+                                    <li class="nav-item" title="MainNode">
+                                        <a href="#by-trivia-3" data-toggle="tab" class="nav-link nav-link-main-node d-flex"><span class="mr-4">SynExpr.Const</span><span
+                                                class="badge badge-dark px-2 py-1 ml-auto">(3,10 - 3,17)</span></a>
+                                    </li>
+                                    <li class="nav-item" title="MainNode">
+                                        <a href="#by-trivia-4" data-toggle="tab" class="nav-link nav-link-main-node d-flex"><span class="mr-4">SynModuleDecl.Types</span><span
+                                                class="badge badge-dark px-2 py-1 ml-auto">(5,0 - 8,1)</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" title="MainNode">
+                                        <a href="#by-trivia-5" data-toggle="tab" class="nav-link nav-link-main-node d-flex"><span class="mr-4">SynModuleDecl.Let</span><span
+                                                class="badge badge-dark px-2 py-1 ml-auto">(10,0 - 11,30)</span></a>
+                                    </li>
+                                    <li class="nav-item" title="Token">
+                                        <a href="#by-trivia-6" data-toggle="tab" class="nav-link nav-link-token d-flex"><span class="mr-4">LBRACE</span><span
+                                                class="badge badge-dark px-2 py-1 ml-auto">(10,10 - 10,11)</span></a>
+                                    </li>
+                                    <li class="nav-item" title="MainNode">
+                                        <a href="#by-trivia-7" data-toggle="tab" class="nav-link nav-link-main-node d-flex"><span class="mr-4">SynExpr.Const</span><span
+                                                class="badge badge-dark px-2 py-1 ml-auto">(11,11 - 11,16)</span></a>
+                                    </li>
+                                    <li class="nav-item" title="MainNode">
+                                        <a href="#by-trivia-8" data-toggle="tab" class="nav-link nav-link-main-node d-flex"><span class="mr-4">SynExpr.Const</span><span
+                                                class="badge badge-dark px-2 py-1 ml-auto">(11,26 - 11,28)</span></a>
+                                    </li>
+                                </ul>
+                                <div class="bg-light flex-grow-1 py-2 px-4 tab-content overflow-auto">
+                                    <div id="by-trivia-1" class="tab-pane active">
+                                        <h2 class="mb-4">SynModuleDecl.NestedModule (1,0 - 11,30)</h2>
+                                        <h4>Content after</h4>
+                                        <ul class="list-unstyled">
+                                            <li>Newline</li>
+                                        </ul>
+                                    </div>
+                                    <div id="by-trivia-2" class="tab-pane">
+                                        <h2 class="mb-4">SynModuleDecl.Let (3,0 - 3,17)</h2>
+                                        <h4>Content before</h4>
+                                        <ul class="list-unstyled">
+                                            <li>Newline</li>
+                                        </ul>
+                                    </div>
+                                    <div id="by-trivia-3" class="tab-pane">
+                                        <h2 class="mb-4">SynExpr.Const (3,10 - 3,17)</h2>
+                                        <h4>Content itself</h4>
+                                        <ul class="list-unstyled">
+                                            <li>StringContent(<code>&quot;DEBUG&quot;</code>)</li>
+                                        </ul>
+                                    </div>
+                                    <div id="by-trivia-4" class="tab-pane">
+                                        <h2 class="mb-4">SynModuleDecl.Types (5,0 - 8,1)</h2>
+                                        <h4>Content before</h4>
+                                        <ul class="list-unstyled">
+                                            <li>Newline</li>
+                                        </ul>
+                                    </div>
+                                    <div id="by-trivia-5" class="tab-pane">
+                                        <h2 class="mb-4">SynModuleDecl.Let (10,0 - 11,30)</h2>
+                                        <h4>Content before</h4>
+                                        <ul class="list-unstyled">
+                                            <li>Newline</li>
+                                        </ul>
+                                        <h4>Content after</h4>
+                                        <ul class="list-unstyled">
+                                            <li>Comment(BlockComment(<code>&quot;(* ending with block comment *)&quot;</code>))</li>
+                                        </ul>
+                                    </div>
+                                    <div id="by-trivia-6" class="tab-pane">
+                                        <h2 class="mb-4">Token <code>LBRACE</code> (10,10 - 10,11)</h2>
+                                        <h4>Content after</h4>
+                                        <ul class="list-unstyled">
+                                            <li>Comment(LineComment(<code>&quot;// this comment right&quot;</code>))</li>
+                                        </ul>
+                                    </div>
+                                    <div id="by-trivia-7" class="tab-pane">
+                                        <h2 class="mb-4">SynExpr.Const (11,11 - 11,16)</h2>
+                                        <h4>Content itself</h4>
+                                        <ul class="list-unstyled">
+                                            <li>StringContent(<code>&quot;FOO&quot;</code>)</li>
+                                        </ul>
+                                    </div>
+                                    <div id="by-trivia-8" class="tab-pane">
+                                        <h2 class="mb-4">SynExpr.Const (11,26 - 11,28)</h2>
+                                        <h4>Content itself</h4>
+                                        <ul class="list-unstyled">
+                                            <li>Number(<code>&quot;78&quot;</code>)</li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade h-100" id="content">by content</div>
+                        <div class="tab-pane fade show active h-100" id="content">
+                            <div class="d-flex h-100">
+                                <ul class="nav flex-column nav-pills">
+                                    <li class="nav-item" title="Newline">
+                                        <a href="#by-content-1" data-toggle="tab" class="nav-link nav-link-newline active d-flex">
+                                            <span class="mr-4">Newline</span><span
+                                                class="badge badge-dark px-2 py-1 ml-auto">(2,0 - 2,0)</span></a>
+                                    </li>
+                                    <li class="nav-item" title="StringContent">
+                                        <a href="#by-content-2" data-toggle="tab" class="nav-link nav-link-string-content d-flex">
+                                            <span class="mr-4">StringContent</span>
+                                            <span class="badge badge-dark px-2 py-1 ml-auto">(3,10 - 3,16)</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" title="Newline">
+                                        <a href="#by-content-3" data-toggle="tab" class="nav-link nav-link-newline d-flex">
+                                            <span class="mr-4">Newline</span><span
+                                                class="badge badge-dark px-2 py-1 ml-auto">(4,0 - 4,0)</span></a>
+                                    </li>
+                                    <li class="nav-item" title="Newline">
+                                        <a href="#by-content-4" data-toggle="tab" class="nav-link nav-link-newline d-flex">
+                                            <span class="mr-4">Newline</span><span
+                                                class="badge badge-dark px-2 py-1 ml-auto">(9,0 - 9,0)</span></a>
+                                    </li>
+                                    <li class="nav-item" title="Comment(LineCommentAfterSourceCode)">
+                                        <a href="#by-content-5" data-toggle="tab" class="nav-link nav-link-comment d-flex">
+                                            <span class="mr-4">Comment(LineCommentAfterSourceCode)</span>
+                                            <span class="badge badge-dark px-2 py-1 ml-auto">(10.12 - 10,32)</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" title="StringContent">
+                                        <a href="#by-content-6" data-toggle="tab" class="nav-link nav-link-string-content d-flex">
+                                            <span class="mr-4">StringContent</span>
+                                            <span class="badge badge-dark px-2 py-1 ml-auto">(11,11 - 11,15)</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" title="NumberContent">
+                                        <a href="#by-content-7" data-toggle="tab" class="nav-link nav-link-number-content d-flex">
+                                            <span class="mr-4">NumberContent</span>
+                                            <span class="badge badge-dark px-2 py-1 ml-auto">(11,26 - 11,27)</span>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item" title="Newline">
+                                        <a href="#by-content-8" data-toggle="tab" class="nav-link nav-link-newline d-flex">
+                                            <span class="mr-4">Newline</span><span
+                                                class="badge badge-dark px-2 py-1 ml-auto">(12,0 - 12,0)</span></a>
+                                    </li>
+                                    <li class="nav-item" title="Comment(LineCommentAfterSourceCode)">
+                                        <a href="#by-content-9" data-toggle="tab" class="nav-link nav-link-comment d-flex">
+                                            <span class="mr-4">Comment (BlockComment)</span>
+                                            <span class="badge badge-dark px-2 py-1 ml-auto">(13.0 - 13,30)</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <div class="bg-light flex-grow-1 py-2 px-4 tab-content">
+                                    <div id="by-content-1" class="tab-pane active">
+                                        <h2 class="mb-4">Newline (2,0 - 2,0)</h2>
+                                    </div>
+                                    <div id="by-content-2" class="tab-pane">
+                                        <h2 class="mb-4">StringContent (3,10 - 3,16)</h2>
+                                        <code>"DEBUG"</code>
+                                    </div>
+                                    <div id="by-content-3" class="tab-pane">
+                                        <h2 class="mb-4">Newline (4,0 - 4,0)</h2>
+                                    </div>
+                                    <div id="by-content-4" class="tab-pane">
+                                        <h2 class="mb-4">Newline (9,0 - 9,0)</h2>
+                                    </div>
+                                    <div id="by-content-5" class="tab-pane">
+                                        <h2 class="mb-4">Comment (10,12 - 10,32)</h2>
+                                        <h5>LineCommentAfterSourceCode</h5>
+                                        <code class="text-success">"// this comment right"</code>
+                                    </div>
+                                    <div id="by-content-6" class="tab-pane">
+                                        <h2 class="mb-4">StringContent (11,11 - 11,15)</h2>
+                                        <code>"FOO"</code>
+                                    </div>
+                                    <div id="by-content-7" class="tab-pane">
+                                        <h2 class="mb-4">NumberContent (11,26 - 11,27)</h2>
+                                        <code>78</code>
+                                    </div>
+                                    <div id="by-content-8" class="tab-pane">
+                                        <h2 class="mb-4">Newline (12,0 - 12,0)</h2>
+                                    </div>
+                                    <div id="by-content-9" class="tab-pane">
+                                        <h2 class="mb-4">Comment (13,0 - 13,30)</h2>
+                                        <h5>BlockComment</h5>
+                                        <code class="text-success">(* ending with block comment *)</code>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
