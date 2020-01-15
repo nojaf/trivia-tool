@@ -1,4 +1,5 @@
 group Client
 FSharp.Core
-Fable.React
-Fable.Elmish
+Fable.Elmish.React
+Fable.Elmish.Debugger
+Fable.Elmish.HMR
