@@ -1,0 +1,33 @@
+version 5.241.2
+source https://api.nuget.org/v3/index.json
+storage: none
+framework: netcore3.0, netstandard2.0, netstandard2.1
+
+group Build
+
+source https://api.nuget.org/v3/index.json
+storage: none
+framework: netstandard2.0
+
+nuget FSharp.Core
+nuget Fake.Core.Target
+nuget Fake.IO.FileSystem
+
+group Client
+
+source https://api.nuget.org/v3/index.json
+storage: none
+framework: netstandard2.0
+
+nuget FSharp.Core
+nuget Fable.React
+nuget Fable.Elmish
+
+group Server
+
+source https://api.nuget.org/v3/index.json
+storage: none
+framework: netcore3.1
+
+nuget FSharp.Core
+nuget Microsoft.NET.Sdk.Functions

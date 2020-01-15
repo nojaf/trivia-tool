@@ -1,0 +1,4 @@
+group Client
+FSharp.Core
+Fable.React
+Fable.Elmish

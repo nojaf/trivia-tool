@@ -1,21 +1,21 @@
-```fsharp
-[<Test>]
-let ``temp`` () =
-    formatSourceString false """module TriviaModule =
+# Trivia tool
 
-let env = "DEBUG"
+## Introduction
 
-type Config = {
-    Name: string
-    Level: int
-}
+A useful tool for debugging Fantomas issues.
+Powered by Azure functions and Fable.
 
-let meh = { // this comment right
-    Name = "FOO"; Level = 78 }
+## Requirements
 
-(* ending with block comment *)"""  config
-    |> prepend newline
-    |> should equal """
-meh
-"""
-```
+- [.NET Core 3.1](https://dotnet.microsoft.com/download)
+- [azure-functions-core-tools@preview](https://yarnpkg.com/en/package/azure-functions-core-tools)
+
+## Getting started
+
+Restore the local tool
+
+> dotnet tool restore
+
+## Build
+
+> dotnet fake run build.fsx
