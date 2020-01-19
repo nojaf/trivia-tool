@@ -23,6 +23,7 @@ nuget FSharp.Core
 nuget Fable.Elmish.React
 nuget Fable.Elmish.Debugger
 nuget Fable.Elmish.HMR
+nuget Fable.Reactstrap 0.4.0
 
 group Server
 

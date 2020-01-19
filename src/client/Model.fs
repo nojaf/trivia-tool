@@ -1,5 +1,11 @@
 module TriviaTool.Client.Model
 
-type Model = obj
+type ActiveTab =
+    | ByTrivia
+    | ByContent
 
-type Msg = | NoOp
+type Model =
+    { ActiveTab: ActiveTab }
+
+type Msg =
+    | SelectTab of ActiveTab

@@ -1,7 +1,6 @@
 const path = require("path");
 const webpack = require("webpack");
 const MinifyPlugin = require("terser-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
@@ -77,7 +76,6 @@ module.exports = {
     //      - HotModuleReplacementPlugin: Enables hot reloading when code changes without refreshing
     plugins: isProduction ?
         commonPlugins.concat([
-            new MiniCssExtractPlugin({ filename: 'style.css' }),
             new CopyWebpackPlugin([
                 { from: resolve('./public') }
             ]),
@@ -113,14 +111,6 @@ module.exports = {
                     loader: 'babel-loader',
                     options: CONFIG.babel
                 },
-            },
-            {
-                test: /\.(sass|scss|css)$/,
-                use: [
-                    isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
-                    'css-loader',
-                    'sass-loader',
-                ],
             },
             {
                 test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)(\?.*$|$)/,
