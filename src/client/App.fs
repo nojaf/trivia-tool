@@ -1,8 +1,8 @@
-﻿module TriviaTool.Client.App
+module TriviaTool.Client.App
 
 open Elmish
-open TriviaTool.Client
 open Elmish.React
+open TriviaTool.Client
 
 #if DEBUG
 open Elmish.Debug

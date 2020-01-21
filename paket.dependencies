@@ -12,6 +12,8 @@ framework: netstandard2.0
 nuget FSharp.Core
 nuget Fake.Core.Target
 nuget Fake.IO.FileSystem
+nuget Fake.JavaScript.Yarn
+nuget Fantomas 3.2.0-beta-002
 
 group Client
 

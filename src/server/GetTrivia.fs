@@ -1,16 +1,16 @@
 namespace Company.Function
 
-open System.IO
+open Microsoft.AspNetCore.Http
 open Microsoft.AspNetCore.Mvc
 open Microsoft.Azure.WebJobs
 open Microsoft.Azure.WebJobs.Extensions.Http
-open Microsoft.AspNetCore.Http
 open Microsoft.Extensions.Logging
+open System.IO
 
 module GetTrivia =
 
     [<FunctionName("GetTrivia")>]
-    let run ([<HttpTrigger(AuthorizationLevel.Function, "post", Route = null)>]req: HttpRequest) (log: ILogger) =
+    let run ([<HttpTrigger(AuthorizationLevel.Function, "post", Route = null)>] req: HttpRequest) (log: ILogger) =
         async {
             log.LogInformation("F# HTTP trigger function processed a request.")
 
@@ -20,4 +20,5 @@ module GetTrivia =
             log.LogInformation(sprintf "Body text: %s" reqBody)
 
             return OkObjectResult("Message received") :> IActionResult
-        } |> Async.StartAsTask
+        }
+        |> Async.StartAsTask

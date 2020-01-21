@@ -7,5 +7,4 @@ type ActiveTab =
 type Model =
     { ActiveTab: ActiveTab }
 
-type Msg =
-    | SelectTab of ActiveTab
+type Msg = SelectTab of ActiveTab
