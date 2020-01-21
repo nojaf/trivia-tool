@@ -3,6 +3,7 @@
 
 open System.IO
 open Fake.Core
+open Fake.Core.TargetOperators
 open Fake.IO
 open Fake.IO.Globbing.Operators
 open Fake.IO.FileSystemOperators
@@ -12,13 +13,14 @@ open Fake.JavaScript
 
 let pwd = Shell.pwd()
 let clientDir = pwd </> "src" </> "client"
+let yarnSetParams = (fun (c: Yarn.YarnParams) -> { c with WorkingDirectory = clientDir })
 
 let fantomasConfig =
     match CodeFormatter.ReadConfiguration(Shell.pwd()) with
     | Success c -> c
     | _ -> failwith "Cannot parse fantomas-config.json"
 
-let fsharpFiles = !!"src/**/*.fs" ++ "build.fsx" -- "src/**/obj/**" -- "src/**/node_modules/**" -- "src/**/.fable/**"
+let fsharpFiles = !!"src/**/*.fs" -- "src/**/obj/**" -- "src/**/node_modules/**" -- "src/**/.fable/**"
 
 Target.create "Format" (fun _ ->
     fsharpFiles
@@ -26,7 +28,7 @@ Target.create "Format" (fun _ ->
     |> Async.RunSynchronously
     |> printfn "Formatted F# files: %A"
 
-    Yarn.exec "prettier webpack.config.js --write" (fun c -> { c with WorkingDirectory = clientDir }))
+    Yarn.exec "prettier webpack.config.js --write" yarnSetParams)
 
 let removeTemporary (results: FakeHelpers.FormatResult []): unit =
     let removeIfHasTemporary result =
@@ -78,6 +80,12 @@ Target.create "CheckCodeFormat" (fun _ ->
         needFormatting |> Array.iter Trace.log
         failwith "Some files need formatting, check output for more info"
 
-    Yarn.exec "prettier webpack.config.js --check" (fun c -> { c with WorkingDirectory = clientDir }))
+    Yarn.exec "prettier webpack.config.js --check" yarnSetParams)
+
+Target.create "Yarn" (fun _ -> Yarn.installFrozenLockFile yarnSetParams)
+
+"Yarn" ==> "Format"
+
+"Yarn" ==> "CheckCodeFormat"
 
 Target.runOrDefault "CheckCodeFormat"
