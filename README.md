@@ -1,5 +1,7 @@
 # Trivia tool
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/nojaf/trivia-tool.svg)](https://greenkeeper.io/)
+
 ## Introduction
 
 A useful tool for debugging Fantomas issues.
