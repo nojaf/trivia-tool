@@ -12,8 +12,9 @@ open Fantomas
 open Fake.JavaScript
 
 let pwd = Shell.pwd()
-let clientDir = pwd </> "src" </> "client"
-let yarnSetParams = (fun (c: Yarn.YarnParams) -> { c with WorkingDirectory = clientDir })
+let clientPath = pwd </> "src" </> "client"
+let serverPath = pwd </> "src" </> "server"
+let yarnSetParams = (fun (c: Yarn.YarnParams) -> { c with WorkingDirectory = clientPath })
 
 let fantomasConfig =
     match CodeFormatter.ReadConfiguration(Shell.pwd()) with
@@ -21,6 +22,13 @@ let fantomasConfig =
     | _ -> failwith "Cannot parse fantomas-config.json"
 
 let fsharpFiles = !!"src/**/*.fs" -- "src/**/obj/**" -- "src/**/node_modules/**" -- "src/**/.fable/**"
+
+Target.create "Clean" (fun _ ->
+    Shell.rm_rf (clientPath </> ".fable")
+    Shell.rm_rf (clientPath </> "bin")
+    Shell.rm_rf (clientPath </> "obj")
+    Shell.rm_rf (serverPath </> "bin")
+    Shell.rm_rf (serverPath </> "obj"))
 
 Target.create "Format" (fun _ ->
     fsharpFiles
@@ -86,6 +94,6 @@ Target.create "Yarn" (fun _ -> Yarn.installFrozenLockFile yarnSetParams)
 
 "Yarn" ==> "Format"
 
-"Yarn" ==> "CheckCodeFormat"
+"Clean" ==> "Yarn" ==> "CheckCodeFormat"
 
 Target.runOrDefault "CheckCodeFormat"
