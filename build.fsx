@@ -115,21 +115,13 @@ module Azure =
         |> ignore
 
 Target.create "DeployServer" (fun _ ->
-    let userName = Environment.environVar "AZ_USER_NAME"
     let resourceGroup = Environment.environVar "AZ_RESOURCE_GROUP"
-    let password = Environment.environVar "AZ_PASSWORD"
-    let tenant = Environment.environVar "AZ_TENANT"
     let armFile = pwd </> "infrastructure" </> "azuredeploy.json"
     let functionappName = Environment.environVar "AZ_FUNCTIONAPP"
     let serverFarmName = Environment.environVar "AZ_SERVERFARM"
     let applicationInsightsName = Environment.environVar "AZ_APPINSIGHTS"
     let storageName = Environment.environVar "AZ_STORAGE"
     let corsUrl = Environment.environVar "AZ_CORS"
-
-    Azure.az ["login";"--service-principal"
-              "--username";userName
-              "--password"; password
-              "--tenant";tenant]
 
     Azure.az ["group";"deployment"; "validate";"-g"
               resourceGroup; "--template-file"; armFile

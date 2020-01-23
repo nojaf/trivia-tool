@@ -28,9 +28,7 @@ jobs:
         run: dotnet fake run build.fsx -t DeployServer
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          AZ_USER_NAME: ${{ secrets.AZ_USER_NAME }}
           AZ_RESOURCE_GROUP: ${{ secrets.AZ_RESOURCE_GROUP }}
-          AZ_TENANT: ${{ secrets.AZ_TENANT }}
           AZ_FUNCTIONAPP: ${{ secrets.AZ_FUNCTIONAPP }}
           AZ_SERVERFARM: ${{ secrets.AZ_SERVERFARM }}
           AZ_APPINSIGHTS: ${{ secrets.AZ_APPINSIGHTS }}
