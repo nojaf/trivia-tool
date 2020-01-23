@@ -3,7 +3,7 @@ const webpack = require("webpack");
 const MinifyPlugin = require("terser-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 function resolve(filePath) {
   return path.join(__dirname, filePath);
@@ -50,7 +50,7 @@ console.log(
 const commonPlugins = [
   new MiniCssExtractPlugin({
     filename: isProduction ? "[name].[hash].css" : "[name].css",
-    chunkFilename: isProduction ? "[name].[hash].css" : "[name].css",
+    chunkFilename: isProduction ? "[name].[hash].css" : "[name].css"
   }),
   new HtmlWebpackPlugin({
     filename: resolve("./output/index.html"),
@@ -119,7 +119,7 @@ module.exports = {
       },
       {
         test: /\.css$/i,
-        use: [MiniCssExtractPlugin.loader, 'css-loader'],
+        use: [MiniCssExtractPlugin.loader, "css-loader"]
       },
       {
         test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)(\?.*$|$)/,
