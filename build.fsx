@@ -107,7 +107,7 @@ Target.create "DeployClient" (fun _ -> Yarn.exec "deploy" yarnSetParams)
 "Yarn" ==> "BuildClient"
 "BuildClient" ==> "Build"
 "BuildServer" ==> "Build"
-"BuildClient" ==> "Deploy"
+"BuildClient" ==> "DeployClient"
 
 "Clean" ==> "Yarn" ==> "CheckCodeFormat" ==> "Build"
 
