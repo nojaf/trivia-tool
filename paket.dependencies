@@ -36,3 +36,24 @@ framework: netcore3.1
 
 nuget FSharp.Core
 nuget Microsoft.NET.Sdk.Functions
+nuget FSharp.Compiler.Service 33.0.0
+
+github nojaf/fantomas:trivia-tool /src/Fantomas/RangeHelpers.fs
+github nojaf/fantomas:trivia-tool /src/Fantomas/AstTransformer.fs
+github nojaf/fantomas:trivia-tool /src/Fantomas/SourceOrigin.fs
+github nojaf/fantomas:trivia-tool /src/Fantomas/Version.fs
+github nojaf/fantomas:trivia-tool /src/Fantomas/Dbg.fs
+github nojaf/fantomas:trivia-tool /src/Fantomas/Utils.fs
+github nojaf/fantomas:trivia-tool /src/Fantomas/FormatConfig.fs
+github nojaf/fantomas:trivia-tool /src/Fantomas/TriviaTypes.fs
+github nojaf/fantomas:trivia-tool /src/Fantomas/TokenParserBoolExpr.fs
+github nojaf/fantomas:trivia-tool /src/Fantomas/TriviaHelpers.fs
+github nojaf/fantomas:trivia-tool /src/Fantomas/TokenParser.fs
+github nojaf/fantomas:trivia-tool /src/Fantomas/Trivia.fs
+github nojaf/fantomas:trivia-tool /src/Fantomas/Context.fs
+github nojaf/fantomas:trivia-tool /src/Fantomas/SourceParser.fs
+github nojaf/fantomas:trivia-tool /src/Fantomas/SourceTransformer.fs
+github nojaf/fantomas:trivia-tool /src/Fantomas/TriviaContext.fs
+github nojaf/fantomas:trivia-tool /src/Fantomas/CodePrinter.fs
+github nojaf/fantomas:trivia-tool /src/Fantomas/CodeFormatterImpl.fs
+github nojaf/fantomas:trivia-tool /src/Fantomas/CodeFormatter.fs
