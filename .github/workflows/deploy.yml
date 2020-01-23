@@ -22,3 +22,5 @@ jobs:
         run: dotnet tool restore
       - name: Deploy
         run: dotnet fake run build.fsx -t DeployClient
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

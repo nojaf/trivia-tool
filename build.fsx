@@ -101,7 +101,10 @@ Target.create "BuildServer" (fun _ ->
 
 Target.create "Build" ignore
 
-Target.create "DeployClient" (fun _ -> Yarn.exec "deploy -u \"github-actions-bot <support+actions@github.com>\"" yarnSetParams)
+Target.create "DeployClient" (fun _ ->
+    let repo = sprintf "https://%s@github.com/nojaf/trivia-tool.git" (Environment.environVar "GH_TOKEN")
+    let command = sprintf "deploy -u \"%s\" --repo \"%s\"" "github-actions-bot <support+actions@github.com>" repo
+    Yarn.exec command yarnSetParams)
 
 "Yarn" ==> "Format"
 "Yarn" ==> "BuildClient"
