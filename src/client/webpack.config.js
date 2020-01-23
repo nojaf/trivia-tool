@@ -3,6 +3,7 @@ const webpack = require("webpack");
 const MinifyPlugin = require("terser-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 function resolve(filePath) {
   return path.join(__dirname, filePath);
@@ -41,23 +42,28 @@ const CONFIG = {
   }
 };
 
+const isProduction = process.argv.indexOf("-p") >= 0;
+console.log(
+  "Bundling for " + (isProduction ? "production" : "development") + "..."
+);
+
 const commonPlugins = [
+  new MiniCssExtractPlugin({
+    filename: isProduction ? "[name].[hash].css" : "[name].css",
+    chunkFilename: isProduction ? "[name].[hash].css" : "[name].css",
+  }),
   new HtmlWebpackPlugin({
     filename: resolve("./output/index.html"),
     template: resolve("./public/index.html")
   })
 ];
 
-const isProduction = process.argv.indexOf("-p") >= 0;
-console.log(
-  "Bundling for " + (isProduction ? "production" : "development") + "..."
-);
-
 module.exports = {
   entry: CONFIG.fsharpEntry,
   output: {
     path: resolve("./output"),
-    filename: isProduction ? "[name].[hash].js" : "[name].js"
+    filename: isProduction ? "[name].[hash].js" : "[name].js",
+    publicPath: isProduction ? "/trivia-tool/" : "/"
   },
   mode: isProduction ? "production" : "development",
   devtool: isProduction ? undefined : "source-map",
@@ -110,6 +116,10 @@ module.exports = {
           loader: "babel-loader",
           options: CONFIG.babel
         }
+      },
+      {
+        test: /\.css$/i,
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
       {
         test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)(\?.*$|$)/,
