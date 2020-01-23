@@ -92,8 +92,11 @@ Target.create "CheckCodeFormat" (fun _ ->
 
 Target.create "Yarn" (fun _ -> Yarn.installFrozenLockFile yarnSetParams)
 
+Target.create "BuildClient" (fun _ -> Yarn.exec "build" yarnSetParams)
+
 "Yarn" ==> "Format"
+"Yarn" ==> "BuildClient"
 
-"Clean" ==> "Yarn" ==> "CheckCodeFormat"
+"Clean" ==> "Yarn" ==> "CheckCodeFormat" ==> "BuildClient"
 
-Target.runOrDefault "CheckCodeFormat"
+Target.runOrDefault "BuildClient"
