@@ -20,6 +20,10 @@ jobs:
           dotnet-version: ${{ matrix.dotnet }}
       - name: Restore local tools
         run: dotnet tool restore
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
       - name: Deploy
         run: dotnet fake run build.fsx -t DeployServer
         env:
