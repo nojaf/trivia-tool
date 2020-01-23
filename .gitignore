@@ -353,3 +353,6 @@ MigrationBackup/
 .ionide/
 .idea/
 src/client/output
+infrastructure/parameters.json
+infrastructure/script.ps1
+/infrastructure/sp-info.md

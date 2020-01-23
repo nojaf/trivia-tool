@@ -106,6 +106,50 @@ Target.create "DeployClient" (fun _ ->
     let command = sprintf "deploy -u \"%s\" --repo \"%s\"" "github-actions-bot <support+actions@github.com>" repo
     Yarn.exec command yarnSetParams)
 
+
+module Azure =
+    let az parameters =
+        let azPath = ProcessUtils.findPath [] "az"
+        CreateProcess.fromRawCommand azPath parameters
+        |> Proc.run
+        |> ignore
+
+Target.create "DeployServer" (fun _ ->
+    let userName = Environment.environVar "AZ_USER_NAME"
+    let resourceGroup = Environment.environVar "AZ_RESOURCE_GROUP"
+    let password = Environment.environVar "AZ_PASSWORD"
+    let tenant = Environment.environVar "AZ_TENANT"
+    let armFile = pwd </> "infrastructure" </> "azuredeploy.json"
+    let functionappName = Environment.environVar "AZ_FUNCTIONAPP"
+    let serverFarmName = Environment.environVar "AZ_SERVERFARM"
+    let applicationInsightsName = Environment.environVar "AZ_APPINSIGHTS"
+    let storageName = Environment.environVar "AZ_STORAGE"
+    let corsUrl = Environment.environVar "AZ_CORS"
+
+    Azure.az ["login";"--service-principal"
+              "--username";userName
+              "--password"; password
+              "--tenant";tenant]
+
+    Azure.az ["group";"deployment"; "validate";"-g"
+              resourceGroup; "--template-file"; armFile
+              "--parameters"; (sprintf "functionappName=%s" functionappName)
+              "--parameters"; (sprintf "serverFarmName=%s" serverFarmName)
+              "--parameters"; (sprintf "applicationInsightsName=%s" applicationInsightsName)
+              "--parameters"; (sprintf "storageName=%s" storageName)
+              "--parameters"; (sprintf "appUrl=%s" corsUrl)]
+
+    Azure.az ["group";"deployment"; "create";"-g"
+              resourceGroup; "--template-file"; armFile
+              "--parameters"; (sprintf "functionappName=%s" functionappName)
+              "--parameters"; (sprintf "serverFarmName=%s" serverFarmName)
+              "--parameters"; (sprintf "applicationInsightsName=%s" applicationInsightsName)
+              "--parameters"; (sprintf "storageName=%s" storageName)
+              "--parameters"; (sprintf "appUrl=%s" corsUrl)]
+
+    // TODO deploy application
+)
+
 "Yarn" ==> "Format"
 "Yarn" ==> "BuildClient"
 "BuildClient" ==> "Build"
