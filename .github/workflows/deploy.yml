@@ -21,7 +21,6 @@ jobs:
       - name: Restore local tools
         run: dotnet tool restore
       - name: Deploy
-        uses: azure/CLI@v1
         run: dotnet fake run build.fsx -t DeployServer
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
