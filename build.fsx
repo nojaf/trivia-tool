@@ -10,6 +10,7 @@ open Fake.IO.FileSystemOperators
 open Fantomas.FormatConfig
 open Fantomas
 open Fake.JavaScript
+open Fake.DotNet
 
 let pwd = Shell.pwd()
 let clientPath = pwd </> "src" </> "client"
@@ -94,9 +95,17 @@ Target.create "Yarn" (fun _ -> Yarn.installFrozenLockFile yarnSetParams)
 
 Target.create "BuildClient" (fun _ -> Yarn.exec "build" yarnSetParams)
 
+Target.create "BuildServer" (fun _ ->
+    DotNet.build (fun config -> { config with Configuration = DotNet.BuildConfiguration.Release })
+        (serverPath </> "server.fsproj"))
+
+Target.create "Build" ignore
+
 "Yarn" ==> "Format"
 "Yarn" ==> "BuildClient"
+"BuildClient" ==> "Build"
+"BuildServer" ==> "Build"
 
-"Clean" ==> "Yarn" ==> "CheckCodeFormat" ==> "BuildClient"
+"Clean" ==> "Yarn" ==> "CheckCodeFormat" ==> "Build"
 
-Target.runOrDefault "BuildClient"
+Target.runOrDefault "BuildServer"
