@@ -108,4 +108,4 @@ Target.create "Build" ignore
 
 "Clean" ==> "Yarn" ==> "CheckCodeFormat" ==> "Build"
 
-Target.runOrDefault "BuildServer"
+Target.runOrDefault "Build"
