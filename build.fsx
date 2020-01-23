@@ -15,6 +15,9 @@ open Fake.DotNet
 let pwd = Shell.pwd()
 let clientPath = pwd </> "src" </> "client"
 let serverPath = pwd </> "src" </> "server"
+let serverProject = (serverPath </> "server.fsproj")
+
+let publishPath = pwd </> "deploy"
 let yarnSetParams = (fun (c: Yarn.YarnParams) -> { c with WorkingDirectory = clientPath })
 
 let fantomasConfig =
@@ -29,7 +32,8 @@ Target.create "Clean" (fun _ ->
     Shell.rm_rf (clientPath </> "bin")
     Shell.rm_rf (clientPath </> "obj")
     Shell.rm_rf (serverPath </> "bin")
-    Shell.rm_rf (serverPath </> "obj"))
+    Shell.rm_rf (serverPath </> "obj")
+    Shell.rm_rf publishPath)
 
 Target.create "Format" (fun _ ->
     fsharpFiles
@@ -96,8 +100,7 @@ Target.create "Yarn" (fun _ -> Yarn.installFrozenLockFile yarnSetParams)
 Target.create "BuildClient" (fun _ -> Yarn.exec "build" yarnSetParams)
 
 Target.create "BuildServer" (fun _ ->
-    DotNet.build (fun config -> { config with Configuration = DotNet.BuildConfiguration.Release })
-        (serverPath </> "server.fsproj"))
+    DotNet.build (fun config -> { config with Configuration = DotNet.BuildConfiguration.Release }) serverProject)
 
 Target.create "Build" ignore
 
@@ -105,7 +108,6 @@ Target.create "DeployClient" (fun _ ->
     let repo = sprintf "https://x-access-token:%s@github.com/nojaf/trivia-tool.git" (Environment.environVar "GH_TOKEN")
     let command = sprintf "deploy -u \"%s\" --repo \"%s\"" "github-actions-bot <support+actions@github.com>" repo
     Yarn.exec command yarnSetParams)
-
 
 module Azure =
     let az parameters =
@@ -139,7 +141,14 @@ Target.create "DeployServer" (fun _ ->
               "--parameters"; (sprintf "storageName=%s" storageName)
               "--parameters"; (sprintf "appUrl=%s" corsUrl)]
 
-    // TODO deploy application
+    DotNet.publish (fun config -> { config with
+                                        Configuration = DotNet.BuildConfiguration.Release
+                                        OutputPath = Some publishPath }) serverProject
+
+    Zip.createZip "./deploy" "func.zip" "" Zip.DefaultZipLevel false (!! "./deploy/*.*" ++ "./deploy/**/*.*")
+    Shell.mv "func.zip" "./deploy/func.zip"
+
+    Azure.az ["functionapp";"deployment";"source";"config-zip";"-g";resourceGroup;"-n";functionappName;"--src";"./deploy/func.zip"]
 )
 
 "Yarn" ==> "Format"
