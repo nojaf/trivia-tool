@@ -101,7 +101,7 @@ Target.create "BuildServer" (fun _ ->
 
 Target.create "Build" ignore
 
-Target.create "DeployClient" (fun _ -> Yarn.exec "deploy" yarnSetParams)
+Target.create "DeployClient" (fun _ -> Yarn.exec "deploy -u \"github-actions-bot <support+actions@github.com>\"" yarnSetParams)
 
 "Yarn" ==> "Format"
 "Yarn" ==> "BuildClient"
