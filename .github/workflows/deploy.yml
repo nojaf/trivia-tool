@@ -34,3 +34,9 @@ jobs:
           AZ_APPINSIGHTS: ${{ secrets.AZ_APPINSIGHTS }}
           AZ_STORAGE: ${{ secrets.AZ_STORAGE }}
           AZ_CORS: ${{ secrets.AZ_CORS }}
+      - name: Request Github Pages build job
+        run: >-
+          curl -L -X POST
+          -H "Content-Type: application/json"
+          -H "Authorization: token ${{ secrets.GH_PAT}}"
+          "https://api.github.com/repos/${{ github.repository }}/pages/builds"
