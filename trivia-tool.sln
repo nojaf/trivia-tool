@@ -10,6 +10,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "paket", "paket.dependencies
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{699E4294-B3F7-402D-A122-9DB4B4CABC85}"
+ProjectSection(SolutionItems) = preProject
+	src\Shared.fs = src\Shared.fs
+EndProjectSection
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "client", "src\client\client.fsproj", "{A243936E-0BCE-4A2A-AFAD-297269DCF574}"
 EndProject

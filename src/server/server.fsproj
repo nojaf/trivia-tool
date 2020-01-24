@@ -90,6 +90,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="../Shared.fs" />
     <Compile Include="GetTrivia.fs" />
     <None Include="paket.references" />
     <None Include="host.json">
@@ -98,7 +99,6 @@
     <None Include="local.settings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-
   </ItemGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>

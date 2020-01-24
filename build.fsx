@@ -159,7 +159,7 @@ Target.create "DeployServer" (fun _ ->
     Azure.az ["functionapp";"deployment";"source";"config-zip";"-g";resourceGroup;"-n";functionappName;"--src";"./deploy/func.zip"]
 )
 
-Target.create "Watch" (fun t ->
+Target.create "Watch" (fun _ ->
     let azFuncPort = Environment.environVarOrDefault "AZFUNC_PORT" "8099"
 
     let compileFable = async { do Yarn.exec "start" yarnSetParams }

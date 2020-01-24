@@ -1,4 +1,4 @@
-namespace Company.Function
+namespace TriviaTool.Server
 
 open Microsoft.AspNetCore.Http
 open Microsoft.Azure.WebJobs
