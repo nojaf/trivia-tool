@@ -195,6 +195,6 @@ Target.create "Watch" (fun _ ->
 "BuildServer" ==> "Build"
 "BuildClient" ==> "DeployClient"
 
-"Clean" ==> "Yarn" ==> "CheckCodeFormat" ==> "Build"
+"Yarn" ==> "Clean" ==> "CheckCodeFormat" ==> "Build"
 
 Target.runOrDefault "Build"

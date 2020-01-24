@@ -91,6 +91,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="../Shared.fs" />
+    <Compile Include="Encoders.fs" />
     <Compile Include="GetTrivia.fs" />
     <None Include="paket.references" />
     <None Include="host.json">

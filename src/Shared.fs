@@ -32,3 +32,11 @@ type TriviaNode =
       ContentItself: TriviaContent option
       ContentAfter: TriviaContent list
       Range: Range }
+
+type Trivia =
+    { Item: TriviaContent
+      Range: Range }
+
+type ParseResult =
+    { Trivia: Trivia list
+      TriviaNodes: TriviaNode list }

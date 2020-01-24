@@ -72,8 +72,10 @@ module GetTrivia =
 
             match astResult with
             | Result.Ok ast ->
-                let trivia = Trivia.collectTrivia FormatConfig.Default tokens lineCount ast
-                return sendText (sprintf "%A" trivia)
+                let trivias = TokenParser.getTriviaFromTokens FormatConfig.Default tokens lineCount
+                let triviaNodes = Trivia.collectTrivia FormatConfig.Default tokens lineCount ast
+                let json = Encoders.encodeParseResult trivias triviaNodes
+                return sendJson json
             | Error err ->
                 return sendInternalError (sprintf "%A" err)
         }
