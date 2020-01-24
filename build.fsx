@@ -12,9 +12,11 @@ open Fantomas.FormatConfig
 open Fantomas
 open Fake.JavaScript
 open Fake.DotNet
+open Fake.DotNet
 
 let pwd = Shell.pwd()
 let clientPath = pwd </> "src" </> "client"
+let clientProject = clientPath </> "client.fsproj"
 let serverPath = pwd </> "src" </> "server"
 let serverProject = (serverPath </> "server.fsproj")
 
@@ -35,6 +37,10 @@ Target.create "Clean" (fun _ ->
     Shell.rm_rf (serverPath </> "bin")
     Shell.rm_rf (serverPath </> "obj")
     Shell.rm_rf publishPath)
+
+Target.create "Restore" (fun _ ->
+    DotNet.restore id serverProject
+    DotNet.restore id clientProject)
 
 Target.create "Format" (fun _ ->
     fsharpFiles
