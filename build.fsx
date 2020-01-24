@@ -165,6 +165,8 @@ Target.create "DeployServer" (fun _ ->
     Azure.az ["functionapp";"deployment";"source";"config-zip";"-g";resourceGroup;"-n";functionappName;"--src";"./deploy/func.zip"]
 )
 
+Target.create "Deploy" ignore
+
 Target.create "Watch" (fun _ ->
     let azFuncPort = Environment.environVarOrDefault "AZFUNC_PORT" "8099"
     let cors = sprintf "http://localhost:%s" (Environment.environVarOrDefault "FRONTEND_PORT" "8080")
@@ -201,6 +203,7 @@ Target.create "Watch" (fun _ ->
 "BuildClient" ==> "Build"
 "BuildServer" ==> "Build"
 "BuildClient" ==> "DeployClient"
+"DeployServer" ==> "DeployClient" ==> "Deploy"
 
 "Yarn" ==> "Clean" ==> "CheckCodeFormat" ==> "Build"
 
