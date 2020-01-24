@@ -28,6 +28,7 @@ nuget Fable.Elmish.React
 nuget Fable.Elmish.Debugger
 nuget Fable.Elmish.HMR
 nuget Fable.Reactstrap 0.4.0
+nuget Thoth.Json
 
 group Server
 
@@ -38,6 +39,7 @@ framework: netcore3.1
 nuget FSharp.Core
 nuget Microsoft.NET.Sdk.Functions
 nuget FSharp.Compiler.Service 33.0.0
+nuget Thoth.Json.Net
 
 github nojaf/fantomas:trivia-tool /src/Fantomas/RangeHelpers.fs
 github nojaf/fantomas:trivia-tool /src/Fantomas/AstTransformer.fs

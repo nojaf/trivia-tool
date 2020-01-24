@@ -824,6 +824,8 @@ STORAGE: NONE
 RESTRICTION: == netcoreapp3.1
 NUGET
   remote: https://api.nuget.org/v3/index.json
+    Fable.Core (3.1.4)
+      FSharp.Core (>= 4.7)
     FSharp.Compiler.Service (33.0)
       FSharp.Core (>= 4.6.2)
       System.Collections.Immutable (>= 1.5)
@@ -1308,6 +1310,10 @@ NUGET
     System.Threading.ThreadPool (4.3)
       System.Runtime (>= 4.3)
       System.Runtime.Handles (>= 4.3)
+    Thoth.Json.Net (3.6)
+      Fable.Core (>= 3.0 < 4.0)
+      FSharp.Core (>= 4.6.2)
+      Newtonsoft.Json (>= 11.0.2)
     WindowsAzure.Storage (9.3.3)
       NETStandard.Library (>= 1.6.1)
       Newtonsoft.Json (>= 10.0.2)
