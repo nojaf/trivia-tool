@@ -1,6 +1,7 @@
 #r "paket: groupref build //"
 #load ".fake/build.fsx/intellisense.fsx"
 
+open System
 open System.IO
 open Fake.Core
 open Fake.Core.TargetOperators
@@ -116,6 +117,13 @@ module Azure =
         |> Proc.run
         |> ignore
 
+    let func parameters =
+        let funcPath = ProcessUtils.findPath [] "func"
+        CreateProcess.fromRawCommand funcPath parameters
+        |> CreateProcess.withWorkingDirectory serverPath
+        |> Proc.run
+        |> ignore
+
 Target.create "DeployServer" (fun _ ->
     let resourceGroup = Environment.environVar "AZ_RESOURCE_GROUP"
     let armFile = pwd </> "infrastructure" </> "azuredeploy.json"
@@ -149,6 +157,36 @@ Target.create "DeployServer" (fun _ ->
     Shell.mv "func.zip" "./deploy/func.zip"
 
     Azure.az ["functionapp";"deployment";"source";"config-zip";"-g";resourceGroup;"-n";functionappName;"--src";"./deploy/func.zip"]
+)
+
+Target.create "Watch" (fun t ->
+    let azFuncPort = Environment.environVarOrDefault "AZFUNC_PORT" "8099"
+
+    let compileFable = async { do Yarn.exec "start" yarnSetParams }
+
+    let stopFunc() = System.Diagnostics.Process.GetProcessesByName("func") |> Seq.iter (fun p -> p.Kill())
+
+    let rec startFunc() =
+        let dirtyWatcher: IDisposable ref = ref null
+
+        let watcher =
+            !!(serverPath </> "*.fs") ++ (serverPath </> "*.fsproj")
+            |> ChangeWatcher.run (fun changes ->
+                printfn "FILE CHANGE %A" changes
+                if !dirtyWatcher <> null then
+                    (!dirtyWatcher).Dispose()
+                    stopFunc()
+                    startFunc())
+
+        dirtyWatcher := watcher
+
+        Azure.func ["start"; "-p";azFuncPort]
+
+    let runAzureFunction = async { startFunc() }
+
+    Async.Parallel [ runAzureFunction; compileFable ]
+    |> Async.Ignore
+    |> Async.RunSynchronously
 )
 
 "Yarn" ==> "Format"
