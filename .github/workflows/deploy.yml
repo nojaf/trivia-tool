@@ -25,7 +25,7 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
       - name: Deploy
-        run: dotnet fake run build.fsx -t DeployServer
+        run: dotnet fake run build.fsx -t Deploy
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           AZ_RESOURCE_GROUP: ${{ secrets.AZ_RESOURCE_GROUP }}
