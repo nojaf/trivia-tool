@@ -36,8 +36,19 @@ let private settings model dispatch =
           Col.Custom [ ClassName "border-right h-100 d-flex flex-column" ] ]
         [ div
             [ Id "source"
-              ClassName "flex-grow-1" ] [ textarea [ ClassName "h-100 w-100" ] [] ]
-          form [ Id "settings" ]
+              ClassName "flex-grow-1" ]
+              [ textarea
+                  [ ClassName "h-100 w-100"
+                    Value model.SourceCode
+                    OnChange(fun ev ->
+                        ev.Value
+                        |> UpdateSourceCode
+                        |> dispatch) ] [] ]
+          form
+              [ Id "settings"
+                OnSubmit(fun ev ->
+                    ev.preventDefault()
+                    dispatch GetTrivia) ]
               [ div [ ClassName "d-flex py-1" ]
                     [ Input.input
                         [ Input.Custom
@@ -74,10 +85,8 @@ let private tab activeTab tabType tabContent =
         [ TabPane.TabId(!^(tabToId tabType))
           TabPane.Custom [ ClassName tabClassName ] ] [ tabContent ]
 
-
-
 let private byTrivia model dispatch =
-    tab model.ActiveTab ByTrivia (str "trivia tab")
+    tab model.ActiveTab ByTrivia (str (sprintf "trivia tab: %A" (Fable.Core.JS.JSON.stringify (model))))
 
 let private byContent model dispatch =
     tab model.ActiveTab ByContent (str "content tab")
@@ -92,8 +101,6 @@ let private results model dispatch =
             [ NavLink.navLink
                 [ NavLink.Active isActive
                   NavLink.Custom [ ClassName "rounded-0" ] ] [ str label ] ]
-
-
 
     Col.col
         [ Col.Xs(Col.mkCol !^8)

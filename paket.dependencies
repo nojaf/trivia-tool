@@ -29,6 +29,7 @@ nuget Fable.Elmish.Debugger
 nuget Fable.Elmish.HMR
 nuget Fable.Reactstrap 0.4.0
 nuget Thoth.Json
+nuget Fable.Fetch
 
 group Server
 

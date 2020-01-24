@@ -5,3 +5,5 @@ Fable.Elmish.Debugger
 Fable.Elmish.HMR
 Fable.Reactstrap
 Thoth.Json
+Fable.Fetch
+Fable.Promise

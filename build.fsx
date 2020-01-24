@@ -167,6 +167,7 @@ Target.create "DeployServer" (fun _ ->
 
 Target.create "Watch" (fun _ ->
     let azFuncPort = Environment.environVarOrDefault "AZFUNC_PORT" "8099"
+    let cors = sprintf "http://localhost:%s" (Environment.environVarOrDefault "FRONTEND_PORT" "8080")
 
     let compileFable = async { do Yarn.exec "start" yarnSetParams }
 
@@ -186,7 +187,7 @@ Target.create "Watch" (fun _ ->
 
         dirtyWatcher := watcher
 
-        Azure.func ["start"; "-p";azFuncPort]
+        Azure.func ["start"; "-p";azFuncPort; "--cors"; cors]
 
     let runAzureFunction = async { startFunc() }
 

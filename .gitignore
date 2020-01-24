@@ -358,3 +358,4 @@ infrastructure/script.ps1
 /infrastructure/sp-info.md
 deploy/
 src/client/.fable
+watch.ps1

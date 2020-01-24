@@ -13,12 +13,6 @@ const CONFIG = {
   fsharpEntry: {
     app: [resolve("./client.fsproj")]
   },
-  devServerProxy: {
-    "/api/*": {
-      target: "http://localhost:7071",
-      changeOrigin: true
-    }
-  },
   historyApiFallback: {
     index: resolve("./index.html")
   },
@@ -55,6 +49,12 @@ const commonPlugins = [
   new HtmlWebpackPlugin({
     filename: resolve("./output/index.html"),
     template: resolve("./public/index.html")
+  }),
+  // ensure that we get a production build of any dependencies
+  // this is primarily for React, where this removes 179KB from the bundle
+  new webpack.DefinePlugin({
+    "process.env.NODE_ENV": isProduction ? '"production"' : '"development"',
+    "process.env.BACKEND": `"${process.env.BACKEND}"`
   })
 ];
 
@@ -85,21 +85,16 @@ module.exports = {
   //      - HotModuleReplacementPlugin: Enables hot reloading when code changes without refreshing
   plugins: isProduction
     ? commonPlugins.concat([
-        new CopyWebpackPlugin([{ from: resolve("./public") }]),
-        // ensure that we get a production build of any dependencies
-        // this is primarily for React, where this removes 179KB from the bundle
-        new webpack.DefinePlugin({
-          "process.env.NODE_ENV": '"production"'
-        })
+        new CopyWebpackPlugin([{ from: resolve("./public") }])
       ])
     : commonPlugins.concat([new webpack.HotModuleReplacementPlugin()]),
   // Configuration for webpack-dev-server
   devServer: {
-    proxy: CONFIG.devServerProxy,
     hot: true,
     inline: true,
     historyApiFallback: CONFIG.historyApiFallback,
-    contentBase: CONFIG.contentBase
+    contentBase: CONFIG.contentBase,
+    port: process.env.FRONTEND_PORT || "8080"
   },
   // - fable-loader: transforms F# into JS
   // - babel-loader: transforms JS to old syntax (compatible with old browsers)
