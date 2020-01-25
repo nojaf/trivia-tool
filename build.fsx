@@ -104,7 +104,10 @@ Target.create "CheckCodeFormat" (fun _ ->
 
 Target.create "Yarn" (fun _ -> Yarn.installFrozenLockFile yarnSetParams)
 
-Target.create "BuildClient" (fun _ -> Yarn.exec "build" yarnSetParams)
+Target.create "BuildClient" (fun _ ->
+    let functionUrl = sprintf "https://%s.azurewebsites.net" (Environment.environVar "AZ_FUNCTIONAPP")
+    Environment.setEnvironVar "BACKEND" functionUrl
+    Yarn.exec "build" yarnSetParams)
 
 Target.create "BuildServer" (fun _ ->
     DotNet.build (fun config -> { config with Configuration = DotNet.BuildConfiguration.Release }) serverProject)
