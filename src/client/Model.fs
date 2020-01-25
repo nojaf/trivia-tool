@@ -3,8 +3,8 @@ module TriviaTool.Client.Model
 open TriviaTool.Shared
 
 type ActiveTab =
+    | ByTriviaNodes
     | ByTrivia
-    | ByContent
 
 type Model =
     { ActiveTab: ActiveTab
@@ -12,7 +12,9 @@ type Model =
       Exception: exn option
       IsLoading: bool
       Trivia: Trivia list
-      TriviaNodes: TriviaNode list }
+      TriviaNodes: TriviaNode list
+      ActiveByTriviaNodeIndex: int
+      ActiveByTriviaIndex: int }
 
 type Msg =
     | SelectTab of ActiveTab
@@ -20,3 +22,4 @@ type Msg =
     | GetTrivia
     | TriviaReceived of ParseResult
     | NetworkError of exn
+    | ActiveItemChange of ActiveTab * int

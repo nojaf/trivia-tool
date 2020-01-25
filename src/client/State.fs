@@ -10,14 +10,6 @@ open TriviaTool.Shared
 [<Emit("process.env.BACKEND")>]
 let private backend: string = jsNative
 
-let init _ =
-    { ActiveTab = ByTrivia
-      SourceCode = ""
-      Exception = None
-      IsLoading = false
-      Trivia = []
-      TriviaNodes = [] }, Cmd.none
-
 let private fetchTrivia model =
     let url = sprintf "%s/api/GetTrivia" backend
     Fetch.fetch url
@@ -28,6 +20,20 @@ let private fetchTrivia model =
         match Decoders.decodeResult json with
         | Ok r -> r
         | Error err -> failwithf "failed to decode result: %A" err)
+
+let private initialModel =
+    { ActiveTab = ByTriviaNodes
+      SourceCode = ""
+      Exception = None
+      IsLoading = false
+      Trivia = []
+      TriviaNodes = []
+      ActiveByTriviaIndex = 0
+      ActiveByTriviaNodeIndex = 0 }
+
+let init _ =
+    let cmd = Cmd.OfPromise.either fetchTrivia initialModel TriviaReceived NetworkError
+    initialModel, cmd
 
 let update msg model =
     match msg with
@@ -41,6 +47,14 @@ let update msg model =
         { model with
               IsLoading = false
               Trivia = result.Trivia
-              TriviaNodes = result.TriviaNodes }, Cmd.none
+              TriviaNodes = result.TriviaNodes
+              ActiveByTriviaIndex = 0
+              ActiveByTriviaNodeIndex = 0 }, Cmd.none
     | NetworkError err ->
-        { model with Exception = Some err }, Cmd.none
+        { initialModel with Exception = Some err }, Cmd.none
+    | ActiveItemChange(tab, index) ->
+        let model =
+            match tab with
+            | ByTriviaNodes -> { model with ActiveByTriviaNodeIndex = index }
+            | ByTrivia -> { model with ActiveByTriviaIndex = index }
+        model, Cmd.none

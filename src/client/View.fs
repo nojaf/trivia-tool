@@ -4,6 +4,7 @@ open Fable.Core.JsInterop
 open Fable.React
 open Fable.React.Props
 open Reactstrap
+open TriviaTool.Client
 open TriviaTool.Client.Model
 
 let private navigation =
@@ -65,14 +66,16 @@ let private settings model dispatch =
                       str "Get tokens" ] ] ]
 
 let private loader model =
+    let className =
+        if model.IsLoading then "" else "d-none"
     div
         [ Id "loader"
-          ClassName "d-none" ] [ div [ ClassName "inner" ] [ Spinner.spinner [ Spinner.Color Primary ] [] ] ]
+          ClassName className ] [ div [ ClassName "inner" ] [ Spinner.spinner [ Spinner.Color Primary ] [] ] ]
 
 let private tabToId tab =
     match tab with
+    | ByTriviaNodes -> "trivia-nodes"
     | ByTrivia -> "trivia"
-    | ByContent -> "content"
 
 let private tab activeTab tabType tabContent =
     let tabClassName =
@@ -85,11 +88,11 @@ let private tab activeTab tabType tabContent =
         [ TabPane.TabId(!^(tabToId tabType))
           TabPane.Custom [ ClassName tabClassName ] ] [ tabContent ]
 
-let private byTrivia model dispatch =
-    tab model.ActiveTab ByTrivia (str (sprintf "trivia tab: %A" (Fable.Core.JS.JSON.stringify (model))))
+let private byTriviaNodes model dispatch =
+    tab model.ActiveTab ByTriviaNodes (ByTriviaNodes.view model dispatch)
 
-let private byContent model dispatch =
-    tab model.ActiveTab ByContent (str "content tab")
+let private byTrivia model dispatch =
+    tab model.ActiveTab ByTrivia (str "content tab")
 
 let private results model dispatch =
     let tabHeader label tabType =
@@ -113,13 +116,13 @@ let private results model dispatch =
                   [ Nav.Tabs true
                     Nav.Pills true
                     Nav.Custom [ ClassName "border-bottom border-primary" ] ]
-                    [ tabHeader "By trivia" ByTrivia
-                      tabHeader "By content" ByContent ]
+                    [ tabHeader "By trivia nodes" ByTriviaNodes
+                      tabHeader "By trivia" ByTrivia ]
                 TabContent.tabContent
                     [ TabContent.Custom [ ClassName "flex-grow-1" ]
                       TabContent.ActiveTab(!^(tabToId model.ActiveTab)) ]
-                    [ byTrivia model dispatch
-                      byContent model dispatch ] ] ]
+                    [ byTriviaNodes model dispatch
+                      byTrivia model dispatch ] ] ]
 
 let view model dispatch =
     div [ ClassName "d-flex flex-column h-100" ]
