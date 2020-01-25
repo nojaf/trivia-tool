@@ -359,3 +359,4 @@ infrastructure/script.ps1
 deploy/
 src/client/.fable
 watch.ps1
+format.ps1
