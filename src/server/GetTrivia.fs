@@ -56,7 +56,7 @@ module GetTrivia =
         }
 
     [<FunctionName("GetTrivia")>]
-    let run ([<HttpTrigger(AuthorizationLevel.Function, "post", Route = null)>] req: HttpRequest) (log: ILogger) =
+    let run ([<HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)>] req: HttpRequest) (log: ILogger) =
         async {
             log.LogInformation("F# HTTP trigger function processed a request.")
 
