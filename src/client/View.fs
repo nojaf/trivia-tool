@@ -92,7 +92,7 @@ let private byTriviaNodes model dispatch =
     tab model.ActiveTab ByTriviaNodes (ByTriviaNodes.view model dispatch)
 
 let private byTrivia model dispatch =
-    tab model.ActiveTab ByTrivia (str "content tab")
+    tab model.ActiveTab ByTrivia (ByTrivia.view model dispatch)
 
 let private results model dispatch =
     let tabHeader label tabType =

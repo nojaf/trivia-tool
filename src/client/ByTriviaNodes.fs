@@ -6,6 +6,7 @@ open Fable.React
 open Fable.React.Props
 open Reactstrap
 open TriviaTool.Shared
+open TriviaTool.Client.Menu
 
 let private typeName =
     function
@@ -77,32 +78,21 @@ let private activeTriviaNode tn =
 let view (model: Model) dispatch =
     let navItems =
         model.TriviaNodes
-        |> List.mapi (fun idx tn ->
+        |> List.map (fun tn ->
             let className =
                 match tn.Type with
                 | TriviaNodeType.Token _ -> "nav-link-token"
                 | TriviaNodeType.MainNode _ -> "nav-link-main-node"
-                |> sprintf "d-flex %s %s" (if idx = model.ActiveByTriviaNodeIndex then "active" else "")
+            { Label = typeName tn.Type
+              ClassName = className
+              Title = typeTitle tn.Type
+              Range = tn.Range })
 
-            NavItem.navItem
-                [ NavItem.Custom
-                    [ Key !!idx
-                      Title(typeTitle tn.Type)
-                      OnClick(fun ev ->
-                          ev.preventDefault()
-                          dispatch (ActiveItemChange(ByTriviaNodes, idx))) ] ]
-                [ NavLink.navLink
-                    [ NavLink.Custom
-                        [ Href "#"
-                          ClassName className ] ]
-                      [ span [ ClassName "mr-4" ] [ str (typeName tn.Type) ]
-                        rangeToBadge tn.Range ] ])
+    let onClick idx = dispatch (Msg.ActiveItemChange(ActiveTab.ByTriviaNodes, idx))
 
     let activeNode =
         List.tryItem model.ActiveByTriviaNodeIndex model.TriviaNodes |> Option.map activeTriviaNode
 
     div [ ClassName "d-flex h-100" ]
-        [ Nav.nav
-            [ Nav.Pills true
-              Nav.Custom [ ClassName "flex-column" ] ] [ ofList navItems ]
+        [ menu onClick model.ActiveByTriviaNodeIndex navItems
           div [ ClassName "bg-light flex-grow-1 py-2 px-4 tab-content overflow-auto" ] [ ofOption activeNode ] ]
