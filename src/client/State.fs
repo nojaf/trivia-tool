@@ -1,5 +1,7 @@
 module TriviaTool.Client.State
 
+open Browser
+open Browser.Types
 open Fable.Core
 open Fable.Core.JsInterop
 open Elmish
@@ -23,7 +25,9 @@ let private fetchTrivia model =
 
 let private initialModel =
     { ActiveTab = ByTriviaNodes
-      SourceCode = ""
+      SourceCode = """//foo
+let a = 9
+"""
       Exception = None
       IsLoading = false
       Trivia = []
@@ -34,6 +38,18 @@ let private initialModel =
 let init _ =
     let cmd = Cmd.OfPromise.either fetchTrivia initialModel TriviaReceived NetworkError
     initialModel, cmd
+
+let private selectRange (range: Range) _ =
+    let data =
+        jsOptions<CustomEventInit> (fun o ->
+            o.detail <-
+                {| startColumn = range.StartColumn + 1
+                   startLineNumber = range.StartLine
+                   endColumn = range.EndColumn + 1
+                   endLineNumber = range.EndLine |})
+
+    let event = CustomEvent.Create("trivia_select_range", data)
+    Dom.window.dispatchEvent (event) |> ignore
 
 let update msg model =
     match msg with
@@ -53,8 +69,20 @@ let update msg model =
     | NetworkError err ->
         { initialModel with Exception = Some err }, Cmd.none
     | ActiveItemChange(tab, index) ->
-        let model =
+        let model, range =
             match tab with
-            | ByTriviaNodes -> { model with ActiveByTriviaNodeIndex = index }
-            | ByTrivia -> { model with ActiveByTriviaIndex = index }
-        model, Cmd.none
+            | ByTriviaNodes ->
+                let range =
+                    List.tryItem index model.TriviaNodes |> Option.map (fun t -> t.Range)
+                { model with ActiveByTriviaNodeIndex = index }, range
+            | ByTrivia ->
+                let range =
+                    List.tryItem index model.Trivia |> Option.map (fun tv -> tv.Range)
+                { model with ActiveByTriviaIndex = index }, range
+
+        let cmd =
+            range
+            |> Option.map (fun r -> Cmd.ofSub (selectRange r))
+            |> Option.defaultValue Cmd.none
+
+        model, cmd

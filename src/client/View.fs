@@ -6,6 +6,7 @@ open Fable.React.Props
 open Reactstrap
 open TriviaTool.Client
 open TriviaTool.Client.Model
+open TriviaTool.Client.Editor
 
 let private navigation =
     Navbar.navbar
@@ -38,13 +39,9 @@ let private settings model dispatch =
         [ div
             [ Id "source"
               ClassName "flex-grow-1" ]
-              [ textarea
-                  [ ClassName "h-100 w-100"
-                    Value model.SourceCode
-                    OnChange(fun ev ->
-                        ev.Value
-                        |> UpdateSourceCode
-                        |> dispatch) ] [] ]
+              [ editor
+                  [ EditorProp.OnChange(UpdateSourceCode >> dispatch)
+                    EditorProp.Value model.SourceCode ] ]
           form
               [ Id "settings"
                 OnSubmit(fun ev ->
