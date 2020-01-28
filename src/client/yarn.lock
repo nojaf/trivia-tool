@@ -1811,7 +1811,7 @@ crypto-browserify@^3.11.0:
     randombytes "^2.0.0"
     randomfill "^1.0.3"
 
-css-loader@^3.4.2:
+css-loader@3.4.2:
   version "3.4.2"
   resolved "https://registry.yarnpkg.com/css-loader/-/css-loader-3.4.2.tgz#d3fdb3358b43f233b78501c5ed7b1c6da6133202"
   integrity sha512-jYq4zdZT0oS0Iykt+fqnzVLRIeiPWhka+7BqPn+oSIpWJAHak5tmB/WZrJ2a21JhCeFyNnnlroSl8c+MtVndzA==
@@ -4502,7 +4502,7 @@ react@16.12.0:
     object-assign "^4.1.1"
     prop-types "^15.6.2"
 
-reactstrap@^8.4.0:
+reactstrap@8.4.0:
   version "8.4.0"
   resolved "https://registry.yarnpkg.com/reactstrap/-/reactstrap-8.4.0.tgz#318961ae8150ec1790fec5ee2f81816c9e32d7a1"
   integrity sha512-hKH/+jnmPp+v1AZweFd58VI2z8KCQbLG+tcReQ/4ddIsJ5tWiBm5EbxD7RZxwlTSjPCqA5bHCwybdCuqUSoHcQ==
