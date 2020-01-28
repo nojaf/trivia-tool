@@ -6,6 +6,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="paket.references" />
+    <Compile Include="Editor.fs" />
     <Compile Include="../Shared.fs" />
     <Compile Include="Decoders.fs" />
     <Compile Include="Model.fs" />
@@ -19,6 +20,7 @@
   <ItemGroup>
     <Content Include="public\index.html" />
     <Content Include="public\favicon.ico" />
+    <Content Include="js\Editor.js" />
   </ItemGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>
