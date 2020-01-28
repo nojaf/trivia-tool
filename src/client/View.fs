@@ -102,24 +102,31 @@ let private results model dispatch =
                 [ NavLink.Active isActive
                   NavLink.Custom [ ClassName "rounded-0" ] ] [ str label ] ]
 
+    let resultPane =
+        if not model.IsLoading then
+            div
+                [ ClassName "h-100 d-flex flex-column"
+                  Id "results" ]
+                [ Nav.nav
+                    [ Nav.Tabs true
+                      Nav.Pills true
+                      Nav.Custom [ ClassName "border-bottom border-primary" ] ]
+                      [ tabHeader "By trivia nodes" ByTriviaNodes
+                        tabHeader "By trivia" ByTrivia ]
+                  TabContent.tabContent
+                      [ TabContent.Custom [ ClassName "flex-grow-1" ]
+                        TabContent.ActiveTab(!^(tabToId model.ActiveTab)) ]
+                      [ byTriviaNodes model dispatch
+                        byTrivia model dispatch ] ]
+            |> Some
+        else
+            None
+
     Col.col
         [ Col.Xs(Col.mkCol !^8)
           Col.Custom [ ClassName "h-100" ] ]
         [ loader model
-          div
-              [ ClassName "h-100 d-flex flex-column"
-                Id "results" ]
-              [ Nav.nav
-                  [ Nav.Tabs true
-                    Nav.Pills true
-                    Nav.Custom [ ClassName "border-bottom border-primary" ] ]
-                    [ tabHeader "By trivia nodes" ByTriviaNodes
-                      tabHeader "By trivia" ByTrivia ]
-                TabContent.tabContent
-                    [ TabContent.Custom [ ClassName "flex-grow-1" ]
-                      TabContent.ActiveTab(!^(tabToId model.ActiveTab)) ]
-                    [ byTriviaNodes model dispatch
-                      byTrivia model dispatch ] ] ]
+          ofOption resultPane ]
 
 let view model dispatch =
     div [ ClassName "d-flex flex-column h-100" ]
