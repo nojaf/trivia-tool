@@ -25,9 +25,7 @@ let private fetchTrivia model =
 
 let private initialModel =
     { ActiveTab = ByTriviaNodes
-      SourceCode = """//foo
-let a = 9
-"""
+      SourceCode = ""
       Exception = None
       IsLoading = false
       Trivia = []
