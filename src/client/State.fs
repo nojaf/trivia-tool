@@ -1,28 +1,31 @@
 module TriviaTool.Client.State
 
+open System
 open Browser
 open Browser.Types
 open Fable.Core
 open Fable.Core.JsInterop
 open Elmish
-open Fable.Core
-open Fable.Core
 open Fetch
 open TriviaTool.Client.Model
+open TriviaTool.Client.Encoders
+open TriviaTool.Client.Decoders
 open TriviaTool.Shared
 open Thoth.Json
 
 [<Emit("process.env.BACKEND")>]
 let private backend: string = jsNative
 
-let private fetchTrivia model =
+
+let private fetchTrivia (payload: ParseRequest) =
     let url = sprintf "%s/api/GetTrivia" backend
+    let json = encodeParseRequest payload |> Encode.toString 4
     Fetch.fetch url
-        [ RequestProperties.Body(!^model.SourceCode)
+        [ RequestProperties.Body(!^json)
           RequestProperties.Method HttpMethod.POST ]
     |> Promise.bind (fun res -> res.text())
     |> Promise.map (fun json ->
-        match Decoders.decodeResult json with
+        match decodeResult json with
         | Ok r -> r
         | Error err -> failwithf "failed to decode result: %A" err)
 
@@ -34,31 +37,20 @@ let private initialModel =
       Trivia = []
       TriviaNodes = []
       ActiveByTriviaIndex = 0
-      ActiveByTriviaNodeIndex = 0 }
+      ActiveByTriviaNodeIndex = 0
+      Defines = "" }
 
-type UrlInfo =
-    { Source: string }
 
-    static member Decode: Decoder<UrlInfo> =
-        Decode.object (fun get ->
-            let source =
-                get.Optional.Field "source" Decode.string |> Option.defaultValue System.String.Empty
-            { Source = source })
-
-    static member Encode(urlInfo: UrlInfo) = Encode.object [ "source", Encode.string urlInfo.Source ]
 
 let private encodeUrl (x: string): string = import "compressToEncodedURIComponent" "./js/urlUtils.js"
 let private decodeUrl (x: string): string = import "decompressFromEncodedURIComponent" "./js/urlUtils.js"
 
 let init _ =
-    let cmd = Cmd.OfPromise.either fetchTrivia initialModel TriviaReceived NetworkError
-
-    let model =
+    let model, parseRequest =
         match window.location.search with
-        | x when System.String.IsNullOrWhiteSpace(x) -> initialModel
+        | x when System.String.IsNullOrWhiteSpace(x) -> initialModel, None
         | x ->
             let search = x.Substring(1) // remove ?
-            printfn "srear: %s" search
 
             let keyValues =
                 search.Split('&')
@@ -66,22 +58,36 @@ let init _ =
                 |> Map.ofArray
             match Map.tryFind "data" keyValues with
             | Some data ->
-                printfn "data: %s" (decodeUrl data)
                 let json = JS.JSON.parse (decodeUrl data)
-                let urlInfo = Decode.fromValue "$" UrlInfo.Decode json
+                let urlInfo = Decode.fromValue "$" decodeParseRequest json
                 match urlInfo with
-                | Result.Ok u -> { initialModel with SourceCode = u.Source }
+                | Result.Ok u ->
+                    { initialModel with
+                          SourceCode = u.SourceCode
+                          Defines = String.concat " " u.Defines }, Some u
                 | Error err ->
                     printfn "%A" err
-                    initialModel
-            | None -> initialModel
+                    initialModel, None
+            | None -> initialModel, None
+
+    let cmd =
+        match parseRequest with
+        | Some pr -> Cmd.OfPromise.either fetchTrivia pr TriviaReceived NetworkError
+        | None -> Cmd.none
 
     model, cmd
 
 let private setGetParam (key, value): unit = import "setGetParam" "./js/urlUtils.js"
 
-let private updateUrl model _ =
-    let json = Encode.toString 2 (UrlInfo.Encode { Source = model.SourceCode })
+let private splitDefines (value: string) =
+    value.Split([| ' '; ';' |], StringSplitOptions.RemoveEmptyEntries) |> List.ofArray
+
+let private modelToParseRequest (model: Model) =
+    { SourceCode = model.SourceCode
+      Defines = splitDefines model.Defines }
+
+let private updateUrl (model: Model) _ =
+    let json = Encode.toString 2 ((modelToParseRequest >> encodeParseRequest) model)
     setGetParam ("data", encodeUrl json)
 
 
@@ -104,9 +110,11 @@ let update msg model =
     | UpdateSourceCode code ->
         { model with SourceCode = code }, Cmd.none
     | GetTrivia ->
+        let parseRequest = modelToParseRequest model
+
         let cmd =
             Cmd.batch
-                [ Cmd.OfPromise.either fetchTrivia model TriviaReceived NetworkError
+                [ Cmd.OfPromise.either fetchTrivia parseRequest TriviaReceived NetworkError
                   Cmd.ofSub (updateUrl model) ]
 
         { model with IsLoading = true }, cmd
@@ -137,3 +145,5 @@ let update msg model =
             |> Option.defaultValue Cmd.none
 
         model, cmd
+    | UpdateDefines d ->
+        { model with Defines = d }, Cmd.none

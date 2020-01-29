@@ -6,7 +6,6 @@ open Fable.React.Props
 open Reactstrap
 open TriviaTool.Client
 open TriviaTool.Client.Model
-open TriviaTool.Client.Editor
 
 let private navigation =
     Navbar.navbar
@@ -39,9 +38,9 @@ let private settings model dispatch =
         [ div
             [ Id "source"
               ClassName "flex-grow-1" ]
-              [ editor
-                  [ EditorProp.OnChange(UpdateSourceCode >> dispatch)
-                    EditorProp.Value model.SourceCode ] ]
+              [ Editor.editor
+                  [ Editor.OnChange(UpdateSourceCode >> dispatch)
+                    Editor.Value model.SourceCode ] ]
           form
               [ Id "settings"
                 OnSubmit(fun ev ->
@@ -51,7 +50,9 @@ let private settings model dispatch =
                     [ Input.input
                         [ Input.Custom
                             [ Placeholder "Enter your defines separated with a space"
-                              ClassName "rounded-0 d-inline-block" ] ]
+                              ClassName "rounded-0 d-inline-block"
+                              Value model.Defines
+                              OnChange(fun ev -> ev.Value |> (Msg.UpdateDefines >> dispatch)) ] ]
                       div [ ClassName "d-inline-block" ]
                           [ ButtonGroup.buttonGroup [ ButtonGroup.Custom [ ClassName "btn-group-toggle" ] ]
                                 [ fileExtensionButton ignore true "*.fs"

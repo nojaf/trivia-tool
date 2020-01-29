@@ -40,3 +40,7 @@ type Trivia =
 type ParseResult =
     { Trivia: Trivia list
       TriviaNodes: TriviaNode list }
+
+type ParseRequest =
+    { SourceCode: string
+      Defines: string list }

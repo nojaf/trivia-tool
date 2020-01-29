@@ -6,10 +6,11 @@ open Microsoft.Azure.WebJobs.Extensions.Http
 open Microsoft.Extensions.Logging
 open System.IO
 open FSharp.Compiler.SourceCodeServices
-open Fantomas
-open Fantomas.FormatConfig
 open System.Net
 open System.Net.Http
+open Fantomas
+open Fantomas.FormatConfig
+open TriviaTool.Shared
 
 module GetTrivia =
 
@@ -61,21 +62,23 @@ module GetTrivia =
             log.LogInformation("F# HTTP trigger function processed a request.")
 
             use stream = new StreamReader(req.Body)
-            let! reqBody = stream.ReadToEndAsync() |> Async.AwaitTask
+            let! json = stream.ReadToEndAsync() |> Async.AwaitTask
+            let parseRequest = TriviaTool.Server.Decoders.decodeParseRequest json
 
-            log.LogInformation(sprintf "Body text: %s" reqBody)
+            match parseRequest with
+            | Ok pr ->
+                let { SourceCode = content; Defines = defines } = pr
+                let (tokens, lineCount) = TokenParser.tokenize defines content
+                let! astResult = collectAST log defines content
 
-            let content = reqBody
-            let defines = []
-            let (tokens, lineCount) = TokenParser.tokenize defines content
-            let! astResult = collectAST log defines content
-
-            match astResult with
-            | Result.Ok ast ->
-                let trivias = TokenParser.getTriviaFromTokens FormatConfig.Default tokens lineCount
-                let triviaNodes = Trivia.collectTrivia FormatConfig.Default tokens lineCount ast
-                let json = Encoders.encodeParseResult trivias triviaNodes
-                return sendJson json
+                match astResult with
+                | Result.Ok ast ->
+                    let trivias = TokenParser.getTriviaFromTokens FormatConfig.Default tokens lineCount
+                    let triviaNodes = Trivia.collectTrivia FormatConfig.Default tokens lineCount ast
+                    let json = Encoders.encodeParseResult trivias triviaNodes
+                    return sendJson json
+                | Error err ->
+                    return sendInternalError (sprintf "%A" err)
             | Error err ->
                 return sendInternalError (sprintf "%A" err)
         }

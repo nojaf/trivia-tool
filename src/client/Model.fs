@@ -14,7 +14,8 @@ type Model =
       Trivia: Trivia list
       TriviaNodes: TriviaNode list
       ActiveByTriviaNodeIndex: int
-      ActiveByTriviaIndex: int }
+      ActiveByTriviaIndex: int
+      Defines: string }
 
 type Msg =
     | SelectTab of ActiveTab
@@ -23,3 +24,4 @@ type Msg =
     | TriviaReceived of ParseResult
     | NetworkError of exn
     | ActiveItemChange of ActiveTab * int
+    | UpdateDefines of string

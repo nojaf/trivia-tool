@@ -34,3 +34,12 @@ let private decodeParseResult: Decoder<ParseResult> =
 
 let decodeResult json =
     Decode.fromString decodeParseResult json
+
+let decodeParseRequest: Decoder<ParseRequest> =
+    Decode.object (fun get ->
+        let source =
+            get.Optional.Field "sourceCode" Decode.string |> Option.defaultValue System.String.Empty
+        let defines =
+            get.Optional.Field "defines" (Decode.list Decode.string) |> Option.defaultValue []
+        { SourceCode = source
+          Defines = defines })
