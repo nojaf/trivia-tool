@@ -21,6 +21,7 @@
     <Content Include="public\index.html" />
     <Content Include="public\favicon.ico" />
     <Content Include="js\Editor.js" />
+    <Content Include="js\urlUtils.js" />
   </ItemGroup>
   <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>
