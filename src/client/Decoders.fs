@@ -43,3 +43,5 @@ let decodeParseRequest: Decoder<ParseRequest> =
             get.Optional.Field "defines" (Decode.list Decode.string) |> Option.defaultValue []
         { SourceCode = source
           Defines = defines })
+
+let decodeVersion json = Decode.fromString Decode.string json

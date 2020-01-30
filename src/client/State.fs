@@ -18,7 +18,7 @@ let private backend: string = jsNative
 
 
 let private fetchTrivia (payload: ParseRequest) =
-    let url = sprintf "%s/api/GetTrivia" backend
+    let url = sprintf "%s/api/get-trivia" backend
     let json = encodeParseRequest payload |> Encode.toString 4
     Fetch.fetch url
         [ RequestProperties.Body(!^json)
@@ -29,6 +29,15 @@ let private fetchTrivia (payload: ParseRequest) =
         | Ok r -> r
         | Error err -> failwithf "failed to decode result: %A" err)
 
+let private fetchFSCVersion() =
+    let url = sprintf "%s/api/version" backend
+    Fetch.fetch url []
+    |> Promise.bind (fun response -> response.text())
+    |> Promise.map (fun json ->
+        match decodeVersion json with
+        | Ok v -> v
+        | Error err -> failwithf "failed to decode version: %A" err)
+
 let private initialModel =
     { ActiveTab = ByTriviaNodes
       SourceCode = ""
@@ -38,9 +47,8 @@ let private initialModel =
       TriviaNodes = []
       ActiveByTriviaIndex = 0
       ActiveByTriviaNodeIndex = 0
-      Defines = "" }
-
-
+      Defines = ""
+      FSCVersion = "???" }
 
 let private encodeUrl (x: string): string = import "compressToEncodedURIComponent" "./js/urlUtils.js"
 let private decodeUrl (x: string): string = import "decompressFromEncodedURIComponent" "./js/urlUtils.js"
@@ -72,9 +80,13 @@ let init _ =
             | None -> initialModel, None
 
     let cmd =
-        match parseRequest with
-        | Some pr -> Cmd.OfPromise.either fetchTrivia pr TriviaReceived NetworkError
-        | None -> Cmd.none
+        let parseCmd =
+            match parseRequest with
+            | Some pr -> Cmd.OfPromise.either fetchTrivia pr TriviaReceived NetworkError
+            | None -> Cmd.none
+
+        let versionCmd = Cmd.OfPromise.either fetchFSCVersion () FSCVersionReceived NetworkError
+        Cmd.batch [ versionCmd; parseCmd ]
 
     model, cmd
 
@@ -148,3 +160,5 @@ let update msg model =
         model, cmd
     | UpdateDefines d ->
         { model with Defines = d }, Cmd.none
+    | FSCVersionReceived version ->
+        { model with FSCVersion = version }, Cmd.none

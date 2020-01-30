@@ -7,11 +7,13 @@ open Reactstrap
 open TriviaTool.Client
 open TriviaTool.Client.Model
 
-let private navigation =
+let private navigation version =
+    let title = sprintf "Trivia tool - FSC version %s" version
+
     Navbar.navbar
         [ Navbar.Light true
           Navbar.Custom [ ClassName "bg-light" ] ]
-        [ NavbarBrand.navbarBrand [ NavbarBrand.Custom [ ClassName "py-0" ] ] [ str "Trivia tool" ]
+        [ NavbarBrand.navbarBrand [ NavbarBrand.Custom [ ClassName "py-0" ] ] [ str title ]
           div [ ClassName "navbar-text py1" ]
               [ Button.button
                   [ Button.Custom
@@ -131,7 +133,7 @@ let private results model dispatch =
 
 let view model dispatch =
     div [ ClassName "d-flex flex-column h-100" ]
-        [ navigation
+        [ navigation model.FSCVersion
           main [ ClassName "flex-grow-1" ]
               [ Row.row [ Row.Custom [ ClassName "h-100 no-gutters" ] ]
                     [ settings model dispatch
