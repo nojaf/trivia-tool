@@ -64,7 +64,8 @@ let init _ =
                 | Result.Ok u ->
                     { initialModel with
                           SourceCode = u.SourceCode
-                          Defines = String.concat " " u.Defines }, Some u
+                          Defines = String.concat " " u.Defines
+                          IsLoading = true }, Some u
                 | Error err ->
                     printfn "%A" err
                     initialModel, None
