@@ -40,9 +40,8 @@ module GetTrivia =
         }
 
 
-    let private collectAST (log: ILogger) defines source =
+    let private collectAST (log: ILogger) fileName defines source =
         async {
-            let fileName = "script.fsx"
             let sourceText = FSharp.Compiler.Text.SourceText.ofString (source)
             let checker = FSharpChecker.Create(keepAssemblyContents = false)
             let! checkOptions = getProjectOptionsFromScript fileName sourceText defines checker
@@ -82,9 +81,9 @@ module GetTrivia =
 
             match parseRequest with
             | Ok pr ->
-                let { SourceCode = content; Defines = defines } = pr
+                let { SourceCode = content; Defines = defines; FileName = fileName } = pr
                 let (tokens, lineCount) = TokenParser.tokenize defines content
-                let! astResult = collectAST log defines content
+                let! astResult = collectAST log fileName defines content
 
                 match astResult with
                 | Result.Ok ast ->

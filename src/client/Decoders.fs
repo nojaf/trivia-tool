@@ -41,7 +41,10 @@ let decodeParseRequest: Decoder<ParseRequest> =
             get.Optional.Field "sourceCode" Decode.string |> Option.defaultValue System.String.Empty
         let defines =
             get.Optional.Field "defines" (Decode.list Decode.string) |> Option.defaultValue []
+        let fileName =
+            get.Optional.Field "fileName" (Decode.string) |> Option.defaultValue "script.fsx"
         { SourceCode = source
-          Defines = defines })
+          Defines = defines
+          FileName = fileName })
 
 let decodeVersion json = Decode.fromString Decode.string json

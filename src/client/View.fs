@@ -25,13 +25,13 @@ let private navigation version =
                       str "GitHub" ] ] ]
 
 let private settings model dispatch =
-    let fileExtensionButton onClick active label =
+    let fileExtensionButton msg active label =
         let className =
             if active then "rounded-0 text-white" else "rounded-0"
         Button.button
             [ Button.Custom
                 [ ClassName className
-                  OnClick onClick ]
+                  OnClick(fun _ -> dispatch msg) ]
               Button.Outline(not active) ] [ str label ]
 
     Col.col
@@ -57,8 +57,8 @@ let private settings model dispatch =
                               OnChange(fun ev -> ev.Value |> (Msg.UpdateDefines >> dispatch)) ] ]
                       div [ ClassName "d-inline-block" ]
                           [ ButtonGroup.buttonGroup [ ButtonGroup.Custom [ ClassName "btn-group-toggle" ] ]
-                                [ fileExtensionButton ignore true "*.fs"
-                                  fileExtensionButton ignore false "*.fsi" ] ] ]
+                                [ fileExtensionButton (SetFsiFile false) (not model.IsFsi) "*.fs"
+                                  fileExtensionButton (SetFsiFile true) model.IsFsi "*.fsi" ] ] ]
                 Button.button
                     [ Button.Color Primary
                       Button.Custom [ ClassName "w-100 rounded-0" ] ]
