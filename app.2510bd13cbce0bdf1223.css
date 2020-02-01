@@ -6109,6 +6109,9 @@ a.text-dark:hover, a.text-dark:focus {
     border-bottom: 2px solid #fff;
     border-right: 1px solid #fff; }
 
+.mw120 {
+  min-width: 120px; }
+
 .bred {
   border: 1px solid red; }
 
