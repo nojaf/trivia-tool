@@ -44,4 +44,5 @@ type ParseResult =
 type ParseRequest =
     { SourceCode: string
       Defines: string list
-      FileName: string }
+      FileName: string
+      KeepNewlineAfter: bool }

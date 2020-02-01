@@ -29,6 +29,7 @@ let fantomasConfig =
     | _ -> failwith "Cannot parse fantomas-config.json"
 
 let fsharpFiles = !!"src/**/*.fs" -- "src/**/obj/**" -- "src/**/node_modules/**" -- "src/**/.fable/**"
+let javaScriptFiles = ["webpack.config.js"; "js/*.js"]
 
 Target.create "Clean" (fun _ ->
     Shell.rm_rf (clientPath </> ".fable")
@@ -48,7 +49,8 @@ Target.create "Format" (fun _ ->
     |> Async.RunSynchronously
     |> printfn "Formatted F# files: %A"
 
-    Yarn.exec "prettier webpack.config.js --write" yarnSetParams)
+    javaScriptFiles
+    |> List.iter (fun js -> Yarn.exec (sprintf "prettier %s --write" js) yarnSetParams))
 
 let removeTemporary (results: FakeHelpers.FormatResult []): unit =
     let removeIfHasTemporary result =
@@ -100,7 +102,8 @@ Target.create "CheckCodeFormat" (fun _ ->
         needFormatting |> Array.iter Trace.log
         failwith "Some files need formatting, check output for more info"
 
-    Yarn.exec "prettier webpack.config.js --check" yarnSetParams)
+    javaScriptFiles
+    |> List.iter (fun js -> Yarn.exec (sprintf "prettier %s --check" js) yarnSetParams))
 
 Target.create "Yarn" (fun _ -> Yarn.installFrozenLockFile yarnSetParams)
 

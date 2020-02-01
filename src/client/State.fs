@@ -48,7 +48,8 @@ let private initialModel =
       ActiveByTriviaNodeIndex = 0
       Defines = ""
       FSCVersion = "???"
-      IsFsi = false }
+      IsFsi = false
+      KeepNewlineAfter = false }
 
 let private encodeUrl (x: string): string = import "compressToEncodedURIComponent" "./js/urlUtils.js"
 let private decodeUrl (x: string): string = import "decompressFromEncodedURIComponent" "./js/urlUtils.js"
@@ -73,7 +74,8 @@ let private restoreModelFromUrl() =
                       SourceCode = u.SourceCode
                       Defines = String.concat " " u.Defines
                       IsFsi = u.FileName.EndsWith(".fsi")
-                      IsLoading = true }, Some u
+                      IsLoading = true
+                      KeepNewlineAfter = u.KeepNewlineAfter }, Some u
             | Error err ->
                 printfn "%A" err
                 initialModel, None
@@ -102,7 +104,8 @@ let private modelToParseRequest (model: Model) =
     { SourceCode = model.SourceCode
       Defines = splitDefines model.Defines
       FileName =
-          if model.IsFsi then "script.fsi" else "script.fsx" }
+          if model.IsFsi then "script.fsi" else "script.fsx"
+      KeepNewlineAfter = model.KeepNewlineAfter }
 
 let private updateUrl (model: Model) _ =
     let json = Encode.toString 2 ((modelToParseRequest >> encodeParseRequest) model)
@@ -169,3 +172,5 @@ let update msg model =
         { model with FSCVersion = version }, Cmd.none
     | SetFsiFile v ->
         { model with IsFsi = v }, Cmd.none
+    | SetKeepNewlineAfter kna ->
+        { model with KeepNewlineAfter = kna }, Cmd.none

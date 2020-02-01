@@ -81,14 +81,16 @@ module GetTrivia =
 
             match parseRequest with
             | Ok pr ->
-                let { SourceCode = content; Defines = defines; FileName = fileName } = pr
+                let { SourceCode = content; Defines = defines; FileName = fileName; KeepNewlineAfter = keepNewlineAfter } =
+                    pr
                 let (tokens, lineCount) = TokenParser.tokenize defines content
                 let! astResult = collectAST log fileName defines content
 
                 match astResult with
                 | Result.Ok ast ->
-                    let trivias = TokenParser.getTriviaFromTokens FormatConfig.Default tokens lineCount
-                    let triviaNodes = Trivia.collectTrivia FormatConfig.Default tokens lineCount ast
+                    let config = ({ FormatConfig.Default with KeepNewlineAfter = keepNewlineAfter })
+                    let trivias = TokenParser.getTriviaFromTokens config tokens lineCount
+                    let triviaNodes = Trivia.collectTrivia config tokens lineCount ast
                     let json = Encoders.encodeParseResult trivias triviaNodes
                     return sendJson json
                 | Error err ->

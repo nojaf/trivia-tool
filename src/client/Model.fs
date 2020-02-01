@@ -17,7 +17,8 @@ type Model =
       ActiveByTriviaIndex: int
       Defines: string
       FSCVersion: string
-      IsFsi: bool }
+      IsFsi: bool
+      KeepNewlineAfter: bool }
 
 type Msg =
     | SelectTab of ActiveTab
@@ -29,3 +30,4 @@ type Msg =
     | UpdateDefines of string
     | FSCVersionReceived of string
     | SetFsiFile of bool
+    | SetKeepNewlineAfter of bool
