@@ -16,7 +16,6 @@ open Thoth.Json
 [<Emit("process.env.BACKEND")>]
 let private backend: string = jsNative
 
-
 let private fetchTrivia (payload: ParseRequest) =
     let url = sprintf "%s/api/get-trivia" backend
     let json = encodeParseRequest payload |> Encode.toString 4
@@ -48,36 +47,42 @@ let private initialModel =
       ActiveByTriviaIndex = 0
       ActiveByTriviaNodeIndex = 0
       Defines = ""
-      FSCVersion = "???" }
+      FSCVersion = "???"
+      IsFsi = false
+      KeepNewlineAfter = false }
 
 let private encodeUrl (x: string): string = import "compressToEncodedURIComponent" "./js/urlUtils.js"
 let private decodeUrl (x: string): string = import "decompressFromEncodedURIComponent" "./js/urlUtils.js"
 
-let init _ =
-    let model, parseRequest =
-        match window.location.search with
-        | x when System.String.IsNullOrWhiteSpace(x) -> initialModel, None
-        | x ->
-            let search = x.Substring(1) // remove ?
+let private restoreModelFromUrl() =
+    match window.location.search with
+    | x when System.String.IsNullOrWhiteSpace(x) -> initialModel, None
+    | x ->
+        let search = x.Substring(1) // remove ?
 
-            let keyValues =
-                search.Split('&')
-                |> Array.map (fun kv -> kv.Split('=').[0], kv.Split('=').[1])
-                |> Map.ofArray
-            match Map.tryFind "data" keyValues with
-            | Some data ->
-                let json = JS.JSON.parse (decodeUrl data)
-                let urlInfo = Decode.fromValue "$" decodeParseRequest json
-                match urlInfo with
-                | Result.Ok u ->
-                    { initialModel with
-                          SourceCode = u.SourceCode
-                          Defines = String.concat " " u.Defines
-                          IsLoading = true }, Some u
-                | Error err ->
-                    printfn "%A" err
-                    initialModel, None
-            | None -> initialModel, None
+        let keyValues =
+            search.Split('&')
+            |> Array.map (fun kv -> kv.Split('=').[0], kv.Split('=').[1])
+            |> Map.ofArray
+        match Map.tryFind "data" keyValues with
+        | Some data ->
+            let json = JS.decodeURIComponent (data) |> decodeUrl
+            let urlInfo = Decode.fromString decodeParseRequest json
+            match urlInfo with
+            | Result.Ok u ->
+                { initialModel with
+                      SourceCode = u.SourceCode
+                      Defines = String.concat " " u.Defines
+                      IsFsi = u.FileName.EndsWith(".fsi")
+                      IsLoading = true
+                      KeepNewlineAfter = u.KeepNewlineAfter }, Some u
+            | Error err ->
+                printfn "%A" err
+                initialModel, None
+        | None -> initialModel, None
+
+let init _ =
+    let model, parseRequest = restoreModelFromUrl()
 
     let cmd =
         let parseCmd =
@@ -97,7 +102,10 @@ let private splitDefines (value: string) =
 
 let private modelToParseRequest (model: Model) =
     { SourceCode = model.SourceCode
-      Defines = splitDefines model.Defines }
+      Defines = splitDefines model.Defines
+      FileName =
+          if model.IsFsi then "script.fsi" else "script.fsx"
+      KeepNewlineAfter = model.KeepNewlineAfter }
 
 let private updateUrl (model: Model) _ =
     let json = Encode.toString 2 ((modelToParseRequest >> encodeParseRequest) model)
@@ -162,3 +170,7 @@ let update msg model =
         { model with Defines = d }, Cmd.none
     | FSCVersionReceived version ->
         { model with FSCVersion = version }, Cmd.none
+    | SetFsiFile v ->
+        { model with IsFsi = v }, Cmd.none
+    | SetKeepNewlineAfter kna ->
+        { model with KeepNewlineAfter = kna }, Cmd.none
