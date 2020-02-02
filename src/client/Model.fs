@@ -15,7 +15,10 @@ type Model =
       TriviaNodes: TriviaNode list
       ActiveByTriviaNodeIndex: int
       ActiveByTriviaIndex: int
-      Defines: string }
+      Defines: string
+      FSCVersion: string
+      IsFsi: bool
+      KeepNewlineAfter: bool }
 
 type Msg =
     | SelectTab of ActiveTab
@@ -25,3 +28,6 @@ type Msg =
     | NetworkError of exn
     | ActiveItemChange of ActiveTab * int
     | UpdateDefines of string
+    | FSCVersionReceived of string
+    | SetFsiFile of bool
+    | SetKeepNewlineAfter of bool

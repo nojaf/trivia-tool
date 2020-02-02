@@ -7,11 +7,13 @@ open Reactstrap
 open TriviaTool.Client
 open TriviaTool.Client.Model
 
-let private navigation =
+let private navigation version =
+    let title = sprintf "Trivia tool - FSC version %s" version
+
     Navbar.navbar
         [ Navbar.Light true
           Navbar.Custom [ ClassName "bg-light" ] ]
-        [ NavbarBrand.navbarBrand [ NavbarBrand.Custom [ ClassName "py-0" ] ] [ str "Trivia tool" ]
+        [ NavbarBrand.navbarBrand [ NavbarBrand.Custom [ ClassName "py-0" ] ] [ str title ]
           div [ ClassName "navbar-text py1" ]
               [ Button.button
                   [ Button.Custom
@@ -23,14 +25,22 @@ let private navigation =
                       str "GitHub" ] ] ]
 
 let private settings model dispatch =
-    let fileExtensionButton onClick active label =
+    let toggleButton msg active label =
         let className =
             if active then "rounded-0 text-white" else "rounded-0"
         Button.button
             [ Button.Custom
                 [ ClassName className
-                  OnClick onClick ]
+                  OnClick(fun _ -> dispatch msg) ]
               Button.Outline(not active) ] [ str label ]
+
+    let keepNewlineSetting =
+        div [ ClassName "d-flex align-items-center justify-content-center" ]
+            [ label [ ClassName "text-muted flex-grow-1 m-0 pl-3" ] [ str "KeepNewlineAfter" ]
+              div [ ClassName "d-inline-block" ]
+                  [ ButtonGroup.buttonGroup [ ButtonGroup.Custom [ ClassName "btn-group-toggle rounded-0 mw120" ] ]
+                        [ toggleButton (SetKeepNewlineAfter true) model.KeepNewlineAfter "True"
+                          toggleButton (SetKeepNewlineAfter false) (not model.KeepNewlineAfter) "False" ] ] ]
 
     Col.col
         [ Col.Xs(Col.mkCol !^4)
@@ -46,7 +56,7 @@ let private settings model dispatch =
                 OnSubmit(fun ev ->
                     ev.preventDefault()
                     dispatch GetTrivia) ]
-              [ div [ ClassName "d-flex py-1" ]
+              [ div [ ClassName "d-flex" ]
                     [ Input.input
                         [ Input.Custom
                             [ Placeholder "Enter your defines separated with a space"
@@ -54,9 +64,11 @@ let private settings model dispatch =
                               Value model.Defines
                               OnChange(fun ev -> ev.Value |> (Msg.UpdateDefines >> dispatch)) ] ]
                       div [ ClassName "d-inline-block" ]
-                          [ ButtonGroup.buttonGroup [ ButtonGroup.Custom [ ClassName "btn-group-toggle" ] ]
-                                [ fileExtensionButton ignore true "*.fs"
-                                  fileExtensionButton ignore false "*.fsi" ] ] ]
+                          [ ButtonGroup.buttonGroup
+                              [ ButtonGroup.Custom [ ClassName "btn-group-toggle rounded-0 mw120" ] ]
+                                [ toggleButton (SetFsiFile false) (not model.IsFsi) "*.fs"
+                                  toggleButton (SetFsiFile true) model.IsFsi "*.fsi" ] ] ]
+                keepNewlineSetting
                 Button.button
                     [ Button.Color Primary
                       Button.Custom [ ClassName "w-100 rounded-0" ] ]
@@ -131,7 +143,7 @@ let private results model dispatch =
 
 let view model dispatch =
     div [ ClassName "d-flex flex-column h-100" ]
-        [ navigation
+        [ navigation model.FSCVersion
           main [ ClassName "flex-grow-1" ]
               [ Row.row [ Row.Custom [ ClassName "h-100 no-gutters" ] ]
                     [ settings model dispatch
