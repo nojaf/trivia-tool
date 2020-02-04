@@ -36,6 +36,7 @@ let private triviaContentToDetail tc =
     match tc with
     | Newline -> str "Newline"
     | StringContent sc -> fragment [] (wrap "StringContent" sc)
+    | CharContent cc -> fragment [] (wrap "CharContent" cc)
     | Comment(c) ->
         match c with
         | BlockComment(bc, _, _) -> (wrap "BlockComment" bc)

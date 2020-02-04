@@ -25,6 +25,7 @@ let private mapToTriviaContent (tc: TriviaContent) =
     | Keyword kw -> Shared.Keyword kw.TokenInfo.TokenName
     | Number n -> Shared.Number n
     | StringContent sc -> Shared.StringContent sc
+    | CharContent cc -> Shared.CharContent cc
     | IdentOperatorAsWord i -> Shared.IdentOperatorAsWord i
     | IdentBetweenTicks i -> Shared.IdentBetweenTicks i
     | Comment c -> Shared.Comment(mapToComment c)

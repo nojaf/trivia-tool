@@ -11,6 +11,7 @@ let private contentToClassName c =
     | Keyword _ -> "keyword"
     | Number _ -> "number-content"
     | StringContent _ -> "string-content"
+    | CharContent _ -> "char-content"
     | IdentOperatorAsWord _ -> "ident-operator-keyword"
     | IdentBetweenTicks _ -> "ident-between-ticks"
     | Comment _ -> "comment"
@@ -24,6 +25,7 @@ let private typeName c =
     | Keyword _ -> "Keyword"
     | Number _ -> "Number"
     | StringContent _ -> "StringContent"
+    | CharContent _ -> "CharContent"
     | IdentOperatorAsWord _ -> "IdentOperatorAsWord"
     | IdentBetweenTicks _ -> "IdentBetweenTicks"
     | Comment c ->
@@ -43,6 +45,7 @@ let private activeTrivia trivia =
         match trivia.Item with
         | Number i
         | StringContent i
+        | CharContent i
         | IdentOperatorAsWord i
         | IdentBetweenTicks i
         | Directive i -> Some i

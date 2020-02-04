@@ -13,13 +13,5 @@ File:Utils.fs
 File:FormatConfig.fs
 File:TriviaTypes.fs
 File:TokenParserBoolExpr.fs
-File:TriviaHelpers.fs
 File:TokenParser.fs
 File:Trivia.fs
-File:Context.fs
-File:SourceParser.fs
-File:SourceTransformer.fs
-File:TriviaContext.fs
-File:CodePrinter.fs
-File:CodeFormatterImpl.fs
-File:CodeFormatter.fs
