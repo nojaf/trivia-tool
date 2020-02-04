@@ -73,7 +73,7 @@ let private settings model dispatch =
                     [ Button.Color Primary
                       Button.Custom [ ClassName "w-100 rounded-0" ] ]
                     [ i [ ClassName "fas fa-code mr-1" ] []
-                      str "Get tokens" ] ] ]
+                      str "Get trivia" ] ] ]
 
 let private loader model =
     let className =
