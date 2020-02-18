@@ -14,7 +14,7 @@ nuget Fake.Core.Target
 nuget Fake.IO.FileSystem
 nuget Fake.JavaScript.Yarn
 nuget Fake.DotNet.Cli
-nuget Fantomas 3.2.0
+nuget Fantomas 3.3.0-beta-001
 nuget Fake.IO.Zip
 
 group Client
