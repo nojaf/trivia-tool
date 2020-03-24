@@ -38,6 +38,7 @@
     "deploy": "gh-pages -d ./output"
   },
   "prettier": {
-    "trailingComma": "none"
+    "trailingComma": "none",
+    "endOfLine": "auto"
   }
 }
