@@ -36,5 +36,8 @@
     "start": "webpack-dev-server",
     "build": "webpack -p",
     "deploy": "gh-pages -d ./output"
+  },
+  "prettier": {
+    "trailingComma": "none"
   }
 }
