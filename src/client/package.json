@@ -19,9 +19,9 @@
     "babel-loader": "8.1.0",
     "copy-webpack-plugin": "5.1.1",
     "css-loader": "3.4.2",
-    "fable-compiler": "2.4.20",
+    "fable-compiler": "2.4.22",
     "fable-loader": "2.1.9",
-    "file-loader": "5.1.0",
+    "file-loader": "6.0.0",
     "gh-pages": "2.2.0",
     "html-webpack-plugin": "3.2.0",
     "mini-css-extract-plugin": "^0.9.0",
@@ -36,5 +36,9 @@
     "start": "webpack-dev-server",
     "build": "webpack -p",
     "deploy": "gh-pages -d ./output"
+  },
+  "prettier": {
+    "trailingComma": "none",
+    "endOfLine": "auto"
   }
 }

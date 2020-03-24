@@ -11,10 +11,10 @@ function resolve(filePath) {
 
 const CONFIG = {
   fsharpEntry: {
-    app: [resolve("./client.fsproj")],
+    app: [resolve("./client.fsproj")]
   },
   historyApiFallback: {
-    index: resolve("./index.html"),
+    index: resolve("./index.html")
   },
   contentBase: resolve("./public"),
   // Use babel-preset-env to generate JS compatible with most-used browsers.
@@ -25,15 +25,15 @@ const CONFIG = {
         "@babel/preset-env",
         {
           targets: {
-            browsers: ["last 2 versions"],
+            browsers: ["last 2 versions"]
           },
-          modules: false,
-        },
+          modules: false
+        }
       ],
-      "@babel/preset-react",
+      "@babel/preset-react"
     ],
-    plugins: ["@babel/plugin-proposal-class-properties"],
-  },
+    plugins: ["@babel/plugin-proposal-class-properties"]
+  }
 };
 
 const isProduction = process.argv.indexOf("-p") >= 0;
@@ -44,18 +44,18 @@ console.log(
 const commonPlugins = [
   new MiniCssExtractPlugin({
     filename: isProduction ? "[name].[hash].css" : "[name].css",
-    chunkFilename: isProduction ? "[name].[hash].css" : "[name].css",
+    chunkFilename: isProduction ? "[name].[hash].css" : "[name].css"
   }),
   new HtmlWebpackPlugin({
     filename: resolve("./output/index.html"),
-    template: resolve("./public/index.html"),
+    template: resolve("./public/index.html")
   }),
   // ensure that we get a production build of any dependencies
   // this is primarily for React, where this removes 179KB from the bundle
   new webpack.DefinePlugin({
     "process.env.NODE_ENV": isProduction ? '"production"' : '"development"',
-    "process.env.BACKEND": `"${process.env.BACKEND}"`,
-  }),
+    "process.env.BACKEND": `"${process.env.BACKEND}"`
+  })
 ];
 
 module.exports = {
@@ -63,7 +63,7 @@ module.exports = {
   output: {
     path: resolve("./output"),
     filename: isProduction ? "[name].[hash].js" : "[name].js",
-    publicPath: isProduction ? "/trivia-tool/" : "/",
+    publicPath: isProduction ? "/trivia-tool/" : "/"
   },
   mode: isProduction ? "production" : "development",
   devtool: isProduction ? undefined : "source-map",
@@ -75,17 +75,17 @@ module.exports = {
         commons: {
           test: /node_modules/,
           name: "vendors",
-          chunks: "all",
-        },
-      },
+          chunks: "all"
+        }
+      }
     },
-    minimizer: isProduction ? [new MinifyPlugin()] : [],
+    minimizer: isProduction ? [new MinifyPlugin()] : []
   },
   // DEVELOPMENT
   //      - HotModuleReplacementPlugin: Enables hot reloading when code changes without refreshing
   plugins: isProduction
     ? commonPlugins.concat([
-        new CopyWebpackPlugin([{ from: resolve("./public") }]),
+        new CopyWebpackPlugin([{ from: resolve("./public") }])
       ])
     : commonPlugins.concat([new webpack.HotModuleReplacementPlugin()]),
   // Configuration for webpack-dev-server
@@ -94,7 +94,7 @@ module.exports = {
     inline: true,
     historyApiFallback: CONFIG.historyApiFallback,
     contentBase: CONFIG.contentBase,
-    port: process.env.FRONTEND_PORT || "8080",
+    port: process.env.FRONTEND_PORT || "8080"
   },
   // - fable-loader: transforms F# into JS
   // - babel-loader: transforms JS to old syntax (compatible with old browsers)
@@ -102,24 +102,24 @@ module.exports = {
     rules: [
       {
         test: /\.fs(x|proj)?$/,
-        use: "fable-loader",
+        use: "fable-loader"
       },
       {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
           loader: "babel-loader",
-          options: CONFIG.babel,
-        },
+          options: CONFIG.babel
+        }
       },
       {
         test: /\.css$/i,
-        use: [MiniCssExtractPlugin.loader, "css-loader"],
+        use: [MiniCssExtractPlugin.loader, "css-loader"]
       },
       {
         test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)(\?.*$|$)/,
-        use: ["file-loader"],
-      },
-    ],
-  },
+        use: ["file-loader"]
+      }
+    ]
+  }
 };
