@@ -32,8 +32,8 @@ const Editor = ({ onChange, language, getEditor, value, isReadOnly }) => {
     theme: "vs-light",
     renderWhitespace: "all",
     minimap: {
-      enabled: false
-    }
+      enabled: false,
+    },
   };
   const handleEditorChange = (ev, value) => {
     if (onChange) {
@@ -68,13 +68,13 @@ Editor.propTypes = {
   value: PropTypes.string,
   language: PropTypes.string,
   isReadOnly: PropTypes.bool,
-  getEditor: PropTypes.func
+  getEditor: PropTypes.func,
 };
 
 Editor.defaultProps = {
   value: "",
   language: "fsharp",
-  isReadOnly: false
+  isReadOnly: false,
 };
 
 export default Editor;
