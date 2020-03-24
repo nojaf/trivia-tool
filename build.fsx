@@ -72,7 +72,7 @@ Target.create "CheckCodeFormat" (fun _ ->
     javaScriptFiles
     |> List.iter (fun js -> Yarn.exec (sprintf "prettier %s --check" js) yarnSetParams))
 
-Target.create "Yarn" (fun _ -> Yarn.installFrozenLockFile yarnSetParams)
+Target.create "Yarn" (fun _ -> Yarn.install yarnSetParams)
 
 Target.create "BuildClient" (fun _ ->
     let functionUrl = sprintf "https://%s.azurewebsites.net" (Environment.environVar "AZ_FUNCTIONAPP")
