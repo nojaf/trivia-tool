@@ -2,6 +2,10 @@
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/nojaf/trivia-tool.svg)](https://greenkeeper.io/)
 
+# **Deprecated**
+
+**moved to** https://github.com/fsprojects/fantomas-tools
+
 ## Introduction
 
 A useful tool for debugging Fantomas issues.
